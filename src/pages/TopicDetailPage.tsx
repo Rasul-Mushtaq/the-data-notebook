@@ -3,14 +3,13 @@ import { topicsData } from "../data/topicsData";
 import {
   ArrowLeft,
   ExternalLink,
-  Code2,
   BookOpen,
   Layers,
   Cpu,
+  PlayCircle,
 } from "lucide-react";
 import { BlockMath } from "react-katex";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { VisualCodeRunner } from "../components/VisualCodeRunner";
 
 export function TopicDetailPage() {
   const { topicId } = useParams<{ topicId: string }>();
@@ -37,7 +36,6 @@ export function TopicDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#121212] text-zinc-100 selection:bg-zinc-700 selection:text-zinc-100">
-      {/* Top Header Navigation */}
       <header className="sticky top-0 z-40 bg-[#121212]/90 backdrop-blur border-b border-zinc-800">
         <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link
@@ -52,9 +50,7 @@ export function TopicDetailPage() {
         </div>
       </header>
 
-      {/* Main Content Area */}
       <main className="max-w-4xl mx-auto px-6 py-16">
-        {/* Title & Summary */}
         <div className="mb-12 border-b border-zinc-800 pb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800/80 text-zinc-300 text-xs font-mono mb-4">
             <Cpu className="w-3.5 h-3.5" /> {topic.eyebrow}
@@ -67,7 +63,6 @@ export function TopicDetailPage() {
           </p>
         </div>
 
-        {/* Detailed Overview */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
             <Layers className="w-5 h-5 text-zinc-400" /> Overview &amp; Key
@@ -90,7 +85,6 @@ export function TopicDetailPage() {
           </div>
         </section>
 
-        {/* Math Formula with KaTeX */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-zinc-400" /> Mathematical
@@ -109,38 +103,19 @@ export function TopicDetailPage() {
           </div>
         </section>
 
-        {/* Interactive Code Snippet */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
-            <Code2 className="w-5 h-5 text-zinc-400" /> Interactive Code
-            Implementation
+            <PlayCircle className="w-5 h-5 text-zinc-400" /> Interactive Visual
+            Execution
           </h2>
-          <div className="rounded-xl overflow-hidden border border-zinc-800 bg-[#18181b]">
-            <div className="bg-zinc-900 px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-              <span className="font-mono text-xs text-zinc-400">
-                {topic.code.title}
-              </span>
-              <span className="font-mono text-xs uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
-                {topic.code.language}
-              </span>
-            </div>
-            <div className="p-4 text-sm overflow-x-auto">
-              <SyntaxHighlighter
-                language={topic.code.language}
-                style={atomDark}
-                customStyle={{
-                  background: "transparent",
-                  margin: 0,
-                  padding: 0,
-                }}
-              >
-                {topic.code.code}
-              </SyntaxHighlighter>
-            </div>
-          </div>
+          <VisualCodeRunner
+            topicId={topic.id}
+            language={topic.code.language}
+            title={topic.code.title}
+            code={topic.code.code}
+          />
         </section>
 
-        {/* Real-World Applications */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4">
             Real-World Applications
@@ -160,7 +135,6 @@ export function TopicDetailPage() {
           </div>
         </section>
 
-        {/* Reference Links */}
         <section className="border-t border-zinc-800 pt-10">
           <h2 className="font-display text-xl font-bold text-zinc-100 mb-4">
             Selected Learning References

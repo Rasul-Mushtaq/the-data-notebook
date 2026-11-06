@@ -25,35 +25,35 @@ export const topicsData: Topic[] = [
     title: "Data Structures & Algorithms",
     eyebrow: "Engineering Foundations",
     summary:
-      "Master the fundamental structures and algorithmic paradigms that govern computational efficiency and scale.",
+      "Master fundamental structures and algorithmic paradigms that govern computational efficiency and scale.",
     description:
-      "Efficient problem-solving requires choosing the right data organization and understanding time and space complexity boundaries. This section covers core algorithmic strategies and data containers.",
+      "Efficient problem solving requires choosing the right data organization and understanding time and space complexity boundaries. This section covers core algorithmic strategies and data containers.",
     breakdown: [
       "Asymptotic Analysis (Big-O, Omega, Theta notations)",
       "Linear Structures: Arrays, Linked Lists, Stacks, Queues",
       "Hierarchical Structures: Binary Search Trees, AVL Trees, Heaps",
-      "Graph Traversal: Breadth-First Search (BFS), Depth-First Search (DFS), Dijkstra's Algorithm",
+      "Graph Traversal: Breadth-First Search, Depth-First Search, Dijkstra Algorithm",
       "Algorithmic Paradigms: Two Pointers, Sliding Window, Dynamic Programming",
     ],
     code: {
       language: "cpp",
       title: "Binary Search Implementation in C++",
       code: `#include <vector>
-      
+
 int binarySearch(const std::vector<int>& arr, int target) {
     // Searches for a target value in a sorted array in O(log n) time.
     int left = 0;
     int right = static_cast<int>(arr.size()) - 1;
 
     while (left <= right) {
-    int mid = left + (right - left) / 2;
+        int mid = left + (right - left) / 2;
 
-    if (arr[mid] == target) {
-        return mid;
-    } else if (arr[mid] < target) {
-        left = mid + 1; 
-    } else {
-        right = mid - 1;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
         }
     }
     return -1; // Target not found
@@ -85,13 +85,13 @@ int binarySearch(const std::vector<int>& arr, int target) {
     summary:
       "Design robust relational schemas, optimize query execution plans, and manage transactional integrity at scale.",
     description:
-      "Relational database management systems (RDBMS) form the backbone of modern web and data architectures. Understanding normalization, indexing, ACID properties, and window functions is critical.",
+      "Relational database management systems form the backbone of modern web and data architectures. Understanding normalization, indexing, ACID properties, and window functions is critical.",
     breakdown: [
-      "ACID Properties & Transaction Isolation Levels",
-      "Schema Normalization (1NF through 3NF) & Denormalization tradeoffs",
+      "ACID Properties and Transaction Isolation Levels",
+      "Schema Normalization (1NF through 3NF) and Denormalization tradeoffs",
       "B-Tree Indexes, Composite Indexes, and Query Execution Plans",
       "Advanced SQL: CTEs, Window Functions (ROW_NUMBER, RANK, LAG/LEAD)",
-      "NoSQL vs. Relational: CAP Theorem and Partition Tolerance",
+      "NoSQL versus Relational: CAP Theorem and Partition Tolerance",
     ],
     code: {
       language: "sql",
@@ -107,10 +107,10 @@ FROM daily_sales
 ORDER BY date;`,
     },
     formula: {
-      title: "Relational Algebra Selection & Join Cost",
+      title: "Relational Algebra Selection and Join Cost",
       latex: "Cost(R \\bowtie S) = B_R + B_R \\times B_S",
       explanation:
-        "Estimating block disk accesses ($B_R, B_S$) during nested-loop joins to optimize query execution times in database query planners.",
+        "Estimating block disk accesses during nested-loop joins to optimize query execution times in database query planners.",
     },
     realWorldApps: [
       "Financial ledger transactions maintaining strict ACID guarantees",
@@ -130,12 +130,12 @@ ORDER BY date;`,
     title: "Data Analysis & Visualization",
     eyebrow: "Data Science",
     summary:
-      "Extract insights from raw datasets using statistical methods, exploratory data analysis (EDA), and clear visual storytelling.",
+      "Extract insights from raw datasets using statistical methods, exploratory data analysis, and clear visual storytelling.",
     description:
-      "Data analysis bridges raw data collection and actionable decision-making. Through Pandas, NumPy, and statistical testing, analysts uncover hidden distributions, anomalies, and correlations.",
+      "Data analysis bridges raw data collection and actionable decision making. Through Pandas, NumPy, and statistical testing, analysts uncover hidden distributions, anomalies, and correlations.",
     breakdown: [
       "Data Cleaning, Handling Missing Values, and Outlier Detection",
-      "Exploratory Data Analysis (EDA) with Pandas & NumPy",
+      "Exploratory Data Analysis with Pandas and NumPy",
       "Statistical Inference: Hypothesis Testing, p-values, and Confidence Intervals",
       "Correlation and Feature Distribution Analysis",
       "Visual Storytelling principles using Matplotlib and Seaborn",
@@ -162,7 +162,7 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
       latex:
         "r = \\frac{\\sum (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum (x_i - \\bar{x})^2 \\sum (y_i - \\bar{y})^2}}",
       explanation:
-        "Measures the linear correlation between two sets of data, yielding values between -1 (perfect negative) and +1 (perfect positive).",
+        "Measures linear correlation between two sets of data, yielding values between -1 and +1.",
     },
     realWorldApps: [
       "A/B testing analysis for product feature conversions",
@@ -184,17 +184,17 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
     summary:
       "Build, evaluate, and tune predictive models using supervised and unsupervised learning algorithms.",
     description:
-      "Machine learning transforms historical data into predictive systems. From linear models to gradient boosted trees and neural networks, understanding the underlying mathematics ensures robust generalization.",
+      "Machine learning transforms historical data into predictive systems. From linear models to gradient boosted trees and neural networks, understanding underlying mathematics ensures robust generalization.",
     breakdown: [
       "Supervised Learning: Linear Regression, Logistic Regression, Decision Trees",
       "Ensemble Methods: Random Forests, Gradient Boosting (XGBoost, LightGBM)",
       "Model Evaluation: ROC-AUC, Precision, Recall, F1-Score, Cross-Validation",
-      "Regularization: L1 (Lasso) and L2 (Ridge) to prevent overfitting",
+      "Regularization: L1 and L2 penalty terms to prevent overfitting",
       "Feature Engineering and Dimensionality Reduction (PCA)",
     ],
     code: {
       language: "python",
-      title: "Scikit-Learn Pipeline & Model Training",
+      title: "Scikit-Learn Pipeline and Model Training",
       code: `from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
@@ -213,10 +213,10 @@ def train_classifier(X, y):
     return pipeline, score`,
     },
     formula: {
-      title: "Logistic Regression Sigmoid & Loss",
+      title: "Logistic Regression Sigmoid and Loss",
       latex: "P(y=1|x) = \\sigma(w^T x + b) = \\frac{1}{1 + e^{-(w^T x + b)}}",
       explanation:
-        "Maps any real-valued number into a probability range between 0 and 1, serving as the foundation for binary classification models.",
+        "Maps real-valued inputs into a probability range between 0 and 1 for binary classification tasks.",
     },
     realWorldApps: [
       "Credit card fraud detection models flagging anomalous transactions",
@@ -229,7 +229,7 @@ def train_classifier(X, y):
         url: "https://scikit-learn.org/stable/user_guide.html",
       },
       {
-        label: "Hands-On Machine Learning (Aurélien Géron)",
+        label: "Hands-On Machine Learning Reference",
         url: "https://www.oreilly.com/library/view/hands-on-machine-learning/9781492032632/",
       },
     ],

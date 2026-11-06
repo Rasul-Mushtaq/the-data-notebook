@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { topicsData } from "../data/topicsData";
 import {
   ArrowLeft,
+  ArrowRight,
   ExternalLink,
   BookOpen,
   Layers,
@@ -13,7 +14,8 @@ import { VisualCodeRunner } from "../components/VisualCodeRunner";
 
 export function TopicDetailPage() {
   const { topicId } = useParams<{ topicId: string }>();
-  const topic = topicsData.find((t) => t.id === topicId);
+  const currentIndex = topicsData.findIndex((t) => t.id === topicId);
+  const topic = topicsData[currentIndex];
 
   if (!topic) {
     return (
@@ -34,6 +36,9 @@ export function TopicDetailPage() {
     );
   }
 
+  // Calculate the next topic in rotation
+  const nextTopic = topicsData[(currentIndex + 1) % topicsData.length];
+
   return (
     <div className="min-h-screen bg-[#121212] text-zinc-100 selection:bg-zinc-700 selection:text-zinc-100">
       <header className="sticky top-0 z-40 bg-[#121212]/90 backdrop-blur border-b border-zinc-800">
@@ -43,6 +48,12 @@ export function TopicDetailPage() {
             className="inline-flex items-center gap-2 text-zinc-400 hover:text-zinc-100 transition-colors text-sm font-mono"
           >
             <ArrowLeft className="w-4 h-4" /> Back to Notebook
+          </Link>
+          <Link
+            to={`/topics/${nextTopic.id}`}
+            className="inline-flex items-center gap-2 text-zinc-300 hover:text-white transition-colors text-sm font-mono"
+          >
+            Move to {nextTopic.title} <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </header>
@@ -60,7 +71,7 @@ export function TopicDetailPage() {
 
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
-            <Layers className="w-5 h-5 text-zinc-400" /> Overview &amp; Key
+            <Layers className="w-5 h-5 text-zinc-400" /> Overview and Key
             Breakdown
           </h2>
           <p className="text-zinc-300 leading-relaxed mb-6">

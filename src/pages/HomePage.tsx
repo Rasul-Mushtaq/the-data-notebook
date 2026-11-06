@@ -1,4 +1,3 @@
-// src/pages/HomePage.tsx
 import { Navbar } from "../components/Navbar";
 import { Hero } from "../components/Hero";
 import { TechMarquee } from "../components/TechMarquee";
@@ -24,10 +23,10 @@ export function HomePage() {
 
       <TechMarquee />
 
-      {/* Topics Section */}
-      <section className="section py-32 bg-linen/50">
+      {/* Topics Section with id="topics" */}
+      <section id="topics" className="section bg-linen/50">
         <div className="container-page">
-          <div className="section-header mb-12">
+          <div className="section-header">
             <h2 className="section-title italic">// Topics</h2>
             <p className="section-desc">
               Explore core subjects across data science and engineering with

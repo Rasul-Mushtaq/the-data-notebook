@@ -1,6 +1,21 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export function Navbar() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleTopicsClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === "/") {
+      const el = document.getElementById("topics");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      navigate("/#topics");
+    }
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-cream/95 backdrop-blur border-b border-borderSoft/60">
       <div className="container-page flex items-center justify-between px-6 h-14 md:h-16">
@@ -11,12 +26,13 @@ export function Navbar() {
           </span>
         </Link>
         <div className="flex items-center gap-6">
-          <Link
-            to="/"
-            className="flex items-center gap-2 text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium"
+          <a
+            href="/#topics"
+            onClick={handleTopicsClick}
+            className="flex items-center gap-2 text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium cursor-pointer"
           >
             Topics
-          </Link>
+          </a>
           <a
             href="https://github.com/Rasul-Mushtaq"
             target="_blank"

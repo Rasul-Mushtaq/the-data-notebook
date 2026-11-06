@@ -19,38 +19,94 @@ export function VisualCodeRunner({
   const [isRunning, setIsRunning] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
 
-  const binarySearchSteps = [
-    {
-      left: 0,
-      right: 9,
-      mid: 4,
-      status: "Initial state. Array sorted. Target = 23.",
-    },
-    {
-      left: 0,
-      right: 9,
-      mid: 4,
-      comparison: "arr[4] (16) < 23. Search right half.",
-      status: "Adjust left to mid + 1 (5).",
-    },
-    {
-      left: 5,
-      right: 9,
-      mid: 7,
-      comparison: "arr[7] (56) > 23. Search left half.",
-      status: "Adjust right to mid - 1 (6).",
-    },
-    {
-      left: 5,
-      right: 6,
-      mid: 5,
-      comparison: "arr[5] (23) == 23. Target found at index 5.",
-      status: "Algorithm complete. Return index 5.",
-    },
-  ];
+  // Topic specific execution steps
+  const stepsMap: Record<string, any[]> = {
+    "data-structures-algorithms": [
+      {
+        left: 0,
+        right: 9,
+        mid: 4,
+        comparison: "arr[4] (16) < 23. Search right half.",
+        status: "Adjust left to mid + 1 (5).",
+      },
+      {
+        left: 5,
+        right: 9,
+        mid: 7,
+        comparison: "arr[7] (56) > 23. Search left half.",
+        status: "Adjust right to mid - 1 (6).",
+      },
+      {
+        left: 5,
+        right: 6,
+        mid: 5,
+        comparison: "arr[5] (23) == 23. Target found at index 5.",
+        status: "Algorithm complete. Return index 5.",
+      },
+    ],
+    "database-management-sql": [
+      {
+        step: 1,
+        query: "Scanning table daily_sales ordered by date",
+        rowsProcessed: 30,
+        status: "Partitioning records for rolling window frame.",
+      },
+      {
+        step: 2,
+        query: "Applying ROWS BETWEEN 6 PRECEDING AND CURRENT ROW",
+        rowsProcessed: 30,
+        status: "Computing running sum and count for 7-day partitions.",
+      },
+      {
+        step: 3,
+        query: "Aggregate completed successfully",
+        rowsProcessed: 30,
+        status: "Outputting rolling_7day_avg column results.",
+      },
+    ],
+    "data-analysis-visualization": [
+      {
+        step: 1,
+        operation: "DataFrame.dropna()",
+        metrics: "Removed 14 null records from feature column.",
+        status: "Cleaned dataset ready for statistical aggregation.",
+      },
+      {
+        step: 2,
+        operation: "series.quantile([0.25, 0.75])",
+        metrics: "Q1 = 42.0, Q3 = 88.0, IQR = 46.0",
+        status: "Computed dispersion and interquartile range.",
+      },
+      {
+        step: 3,
+        operation: "series.skew()",
+        metrics: "Skewness coefficient = 0.34",
+        status: "Distribution is moderately right-skewed.",
+      },
+    ],
+    "machine-learning-modeling": [
+      {
+        step: 1,
+        operation: "train_test_split(test_size=0.2)",
+        metrics: "Train samples = 800, Test samples = 200",
+        status: "Stratified dataset partitioning complete.",
+      },
+      {
+        step: 2,
+        operation: "StandardScaler().fit_transform()",
+        metrics: "Mean = 0.0, Standard Deviation = 1.0",
+        status: "Normalized feature distributions.",
+      },
+      {
+        step: 3,
+        operation: "RandomForestClassifier.fit()",
+        metrics: "Accuracy Score = 94.5%",
+        status: "Ensemble training converged successfully.",
+      },
+    ],
+  };
 
-  const arrayValues = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];
-  const target = 23;
+  const steps = stepsMap[topicId] || [];
 
   const handleRun = () => {
     setIsRunning(true);
@@ -58,7 +114,7 @@ export function VisualCodeRunner({
   };
 
   const handleNextStep = () => {
-    if (stepIndex < binarySearchSteps.length - 1) {
+    if (stepIndex < steps.length - 1) {
       setStepIndex(stepIndex + 1);
     }
   };
@@ -68,7 +124,8 @@ export function VisualCodeRunner({
     setStepIndex(0);
   };
 
-  const currentStep = binarySearchSteps[stepIndex];
+  const currentStep = steps[stepIndex];
+  const arrayValues = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];
 
   return (
     <div className="rounded-xl overflow-hidden border border-zinc-800 bg-[#18181b]">
@@ -106,10 +163,9 @@ export function VisualCodeRunner({
         <div className="p-6 bg-zinc-950/90">
           <div className="flex items-center justify-between mb-4">
             <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
-              Visual Execution Step {stepIndex + 1} of{" "}
-              {binarySearchSteps.length}
+              Visual Execution Step {stepIndex + 1} of {steps.length}
             </span>
-            {stepIndex < binarySearchSteps.length - 1 ? (
+            {stepIndex < steps.length - 1 ? (
               <button
                 onClick={handleNextStep}
                 className="inline-flex items-center gap-1 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded text-xs font-mono transition-colors"
@@ -125,7 +181,7 @@ export function VisualCodeRunner({
 
           <div className="mb-6">
             <p className="text-xs font-mono text-zinc-400 mb-2">
-              Target Value: {target}
+              Target Value: 23
             </p>
             <div className="flex flex-wrap gap-2">
               {arrayValues.map((val, idx) => {
@@ -175,11 +231,9 @@ export function VisualCodeRunner({
                 mid: <span className="text-amber-400">{currentStep.mid}</span>
               </span>
             </div>
-            {currentStep.comparison && (
-              <div className="text-zinc-200 pt-1">
-                Condition: {currentStep.comparison}
-              </div>
-            )}
+            <div className="text-zinc-200 pt-1">
+              Condition: {currentStep.comparison}
+            </div>
             <div className="text-zinc-400 pt-1">{currentStep.status}</div>
           </div>
         </div>
@@ -187,17 +241,48 @@ export function VisualCodeRunner({
 
       {isRunning && topicId !== "data-structures-algorithms" && (
         <div className="p-6 bg-zinc-950/90">
-          <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider mb-3">
-            Visual Execution Trace
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-xs font-mono text-zinc-400 uppercase tracking-wider">
+              Execution Stage {stepIndex + 1} of {steps.length}
+            </span>
+            {stepIndex < steps.length - 1 ? (
+              <button
+                onClick={handleNextStep}
+                className="inline-flex items-center gap-1 px-3 py-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded text-xs font-mono transition-colors"
+              >
+                Next Stage <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            ) : (
+              <span className="text-xs font-mono text-emerald-400">
+                Execution Complete
+              </span>
+            )}
           </div>
+
           <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 font-mono text-xs text-zinc-300 space-y-2">
-            <p className="text-emerald-400">
-              Simulation executed successfully.
-            </p>
-            <p className="text-zinc-400 leading-relaxed">
-              Step-by-step execution trace demonstrated state mutation, memory
-              allocation, and time complexity bounds.
-            </p>
+            {currentStep.query && (
+              <div className="text-blue-400">
+                Query Plan: {currentStep.query}
+              </div>
+            )}
+            {currentStep.operation && (
+              <div className="text-blue-400">
+                Operation: {currentStep.operation}
+              </div>
+            )}
+            {currentStep.rowsProcessed && (
+              <div className="text-zinc-400">
+                Records Affected: {currentStep.rowsProcessed}
+              </div>
+            )}
+            {currentStep.metrics && (
+              <div className="text-amber-400">
+                Metrics: {currentStep.metrics}
+              </div>
+            )}
+            <div className="text-emerald-400 pt-1">
+              Status: {currentStep.status}
+            </div>
           </div>
         </div>
       )}

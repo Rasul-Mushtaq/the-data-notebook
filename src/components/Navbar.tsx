@@ -1,26 +1,22 @@
+import { Link } from "react-router-dom";
+
 export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-40 bg-cream/95 backdrop-blur border-b border-borderSoft/60">
       <div className="container-page flex items-center justify-between px-6 h-14 md:h-16">
-        <div className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3">
           <img src="/logo.png" alt="Logo" className="h-7 w-7 object-contain" />
           <span className="font-display text-xl font-bold text-charcoal tracking-tight">
             The Data Notebook
           </span>
-        </div>
+        </Link>
         <div className="flex items-center gap-6">
-          <a
+          <Link
+            to="/"
             className="flex items-center gap-2 text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium"
-            aria-label="Topics"
           >
             Topics
-          </a>
-          <a
-            className="flex items-center gap-2 text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium"
-            aria-label="Resources"
-          >
-            Resources
-          </a>
+          </Link>
           <a
             href="https://github.com/Rasul-Mushtaq"
             target="_blank"

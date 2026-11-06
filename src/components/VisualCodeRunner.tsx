@@ -19,46 +19,60 @@ export function VisualCodeRunner({
   const [isRunning, setIsRunning] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
 
-  // Topic specific execution steps
   const stepsMap: Record<string, any[]> = {
     "data-structures-algorithms": [
       {
         left: 0,
         right: 9,
         mid: 4,
-        comparison: "arr[4] (16) < 23. Search right half.",
-        status: "Adjust left to mid + 1 (5).",
+        highlightLines: [5, 6, 8],
+        comparison:
+          "Initialize pointers left = 0, right = 9. Loop condition left <= right is true.",
+        status: "Compute mid index = 4.",
       },
       {
         left: 5,
         right: 9,
         mid: 7,
-        comparison: "arr[7] (56) > 23. Search left half.",
-        status: "Adjust right to mid - 1 (6).",
+        highlightLines: [9, 11, 13, 14],
+        comparison: "arr[4] (16) < target (23). Adjust left = mid + 1 (5).",
+        status: "Recalculate mid index = 7.",
       },
       {
         left: 5,
         right: 6,
         mid: 5,
-        comparison: "arr[5] (23) == 23. Target found at index 5.",
+        highlightLines: [9, 11, 13, 17],
+        comparison: "arr[7] (56) > target (23). Adjust right = mid - 1 (6).",
+        status: "Recalculate mid index = 5.",
+      },
+      {
+        left: 5,
+        right: 6,
+        mid: 5,
+        highlightLines: [9, 11, 12],
+        comparison: "arr[5] == target (23). Target found at index 5.",
         status: "Algorithm complete. Return index 5.",
       },
     ],
     "database-management-sql": [
       {
         step: 1,
+        highlightLines: [1, 2],
         query: "Scanning table daily_sales ordered by date",
         rowsProcessed: 30,
         status: "Partitioning records for rolling window frame.",
       },
       {
         step: 2,
+        highlightLines: [3, 4, 5, 6],
         query: "Applying ROWS BETWEEN 6 PRECEDING AND CURRENT ROW",
         rowsProcessed: 30,
-        status: "Computing running sum and count for 7-day partitions.",
+        status: "Computing running sum and average for 7-day partitions.",
       },
       {
         step: 3,
+        highlightLines: [7, 8],
         query: "Aggregate completed successfully",
         rowsProcessed: 30,
         status: "Outputting rolling_7day_avg column results.",
@@ -67,18 +81,21 @@ export function VisualCodeRunner({
     "data-analysis-visualization": [
       {
         step: 1,
+        highlightLines: [4, 5],
         operation: "DataFrame.dropna()",
         metrics: "Removed 14 null records from feature column.",
         status: "Cleaned dataset ready for statistical aggregation.",
       },
       {
         step: 2,
+        highlightLines: [6, 7, 8, 9, 10],
         operation: "series.quantile([0.25, 0.75])",
         metrics: "Q1 = 42.0, Q3 = 88.0, IQR = 46.0",
         status: "Computed dispersion and interquartile range.",
       },
       {
         step: 3,
+        highlightLines: [11],
         operation: "series.skew()",
         metrics: "Skewness coefficient = 0.34",
         status: "Distribution is moderately right-skewed.",
@@ -87,19 +104,22 @@ export function VisualCodeRunner({
     "machine-learning-modeling": [
       {
         step: 1,
+        highlightLines: [6, 7],
         operation: "train_test_split(test_size=0.2)",
         metrics: "Train samples = 800, Test samples = 200",
         status: "Stratified dataset partitioning complete.",
       },
       {
         step: 2,
-        operation: "StandardScaler().fit_transform()",
+        highlightLines: [9, 10, 11, 12],
+        operation: "Pipeline setup with StandardScaler and RandomForest",
         metrics: "Mean = 0.0, Standard Deviation = 1.0",
         status: "Normalized feature distributions.",
       },
       {
         step: 3,
-        operation: "RandomForestClassifier.fit()",
+        highlightLines: [14, 15],
+        operation: "pipeline.fit() and score()",
         metrics: "Accuracy Score = 94.5%",
         status: "Ensemble training converged successfully.",
       },
@@ -124,7 +144,8 @@ export function VisualCodeRunner({
     setStepIndex(0);
   };
 
-  const currentStep = steps[stepIndex];
+  const currentStep = steps[stepIndex] || {};
+  const activeLines = currentStep.highlightLines || [];
   const arrayValues = [2, 5, 8, 12, 16, 23, 38, 56, 72, 91];
 
   return (
@@ -153,6 +174,20 @@ export function VisualCodeRunner({
         <SyntaxHighlighter
           language={language}
           style={atomDark}
+          showLineNumbers
+          wrapLines
+          lineProps={(lineNumber) => {
+            const style: React.CSSProperties = {
+              display: "block",
+              width: "100%",
+            };
+            if (isRunning && activeLines.includes(lineNumber)) {
+              style.backgroundColor = "rgba(59, 130, 246, 0.15)";
+              style.borderLeft = "3px solid #3b82f6";
+              style.paddingLeft = "8px";
+            }
+            return { style };
+          }}
           customStyle={{ background: "transparent", margin: 0, padding: 0 }}
         >
           {code}

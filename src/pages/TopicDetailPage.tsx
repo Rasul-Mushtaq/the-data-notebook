@@ -8,7 +8,7 @@ import {
   Layers,
   Cpu,
 } from "lucide-react";
-import { InlineMath, BlockMath } from "react-katex";
+import { BlockMath } from "react-katex";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 

@@ -36,25 +36,28 @@ export const topicsData: Topic[] = [
       "Algorithmic Paradigms: Two Pointers, Sliding Window, Dynamic Programming",
     ],
     code: {
-      language: "python",
-      title: "Binary Search Implementation in Python",
-      code: `def binary_search(arr: list[int], target: int) -> int:
-    """
-    Searches for a target value in a sorted array in O(log n) time.
-    """
-    left, right = 0, len(arr) - 1
-    
-    while left <= right:
-        mid = left + (right - left) // 2
-        
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            left = mid + 1
-        else:
-            right = mid - 1
-            
-    return -1  # Target not found`,
+      language: "cpp",
+      title: "Binary Search Implementation in C++",
+      code: `#include <vector>
+      
+int binarySearch(const std::vector<int>& arr, int target) {
+    // Searches for a target value in a sorted array in O(log n) time.
+    int left = 0;
+    int right = static_cast<int>(arr.size()) - 1;
+
+    while (left <= right) {
+    int mid = left + (right - left) / 2;
+
+    if (arr[mid] == target) {
+        return mid;
+    } else if (arr[mid] < target) {
+        left = mid + 1; 
+    } else {
+        right = mid - 1;
+        }
+    }
+    return -1; // Target not found
+}`,
     },
     formula: {
       title: "Master Theorem for Recurrence Relations",

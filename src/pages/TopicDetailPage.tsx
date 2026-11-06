@@ -44,18 +44,13 @@ export function TopicDetailPage() {
           >
             <ArrowLeft className="w-4 h-4" /> Back to Notebook
           </Link>
-          <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest">
-            {topic.eyebrow}
-          </span>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-16">
         <div className="mb-12 border-b border-zinc-800 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-800/80 text-zinc-300 text-xs font-mono mb-4">
-            <Cpu className="w-3.5 h-3.5" /> {topic.eyebrow}
-          </div>
-          <h1 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 mb-4 tracking-tight">
+          <h1 className="font-display text-4xl md:text-5xl font-bold text-zinc-100 mb-4 tracking-tight flex items-center gap-3">
+            <Cpu className="w-8 h-8 text-zinc-400 flex-shrink-0" />{" "}
             {topic.title}
           </h1>
           <p className="text-xl text-zinc-400 leading-relaxed font-sans">

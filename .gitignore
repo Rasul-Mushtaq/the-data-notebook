@@ -1,0 +1,28 @@
+# See https://github.com/github/gitignore/blob/main/Node.gitignore
+node_modules/
+# See https://github.com/github/gitignore/blob/main/Windows.gitignore
+# Default pattern to ignore OS-generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+# Log files
+*.log
+# Editor directories and files
+.vscode/
+.idea/
+# Dependency directories
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+# Production builds
+dist/
+/dist
+# Environment variables
+.env*
+# TypeScript
+*.tsbuildinfo
+*.tsc
+# Vite/React
+.coverage/
+# Tailwind
+.tailwind

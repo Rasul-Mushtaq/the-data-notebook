@@ -28,7 +28,7 @@ export function HomePage() {
       <section className="section bg-linen/50 border-t border-borderSoft/60">
         <div className="container-page">
           <div className="section-header">
-            <h2 className="section-title">// Topics</h2>
+            <h2 className="section-title italic">// Topics</h2>
             <p className="section-desc">
               Explore core subjects across data science and engineering with
               mathematical foundations and code.
@@ -74,7 +74,7 @@ export function HomePage() {
       <section className="section border-t border-borderSoft/60">
         <div className="container-page">
           <div className="section-header">
-            <h2 className="section-title">// Learning Resources</h2>
+            <h2 className="section-title italic">// Learning Resources</h2>
             <p className="section-desc">
               Selected study guides from university and online platforms.
             </p>

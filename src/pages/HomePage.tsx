@@ -25,9 +25,9 @@ export function HomePage() {
       <TechMarquee />
 
       {/* Topics Section */}
-      <section className="section bg-linen/50 border-t border-borderSoft/60">
+      <section className="section py-32 bg-linen/50">
         <div className="container-page">
-          <div className="section-header">
+          <div className="section-header mb-12">
             <h2 className="section-title italic">// Topics</h2>
             <p className="section-desc">
               Explore core subjects across data science and engineering with
@@ -71,7 +71,7 @@ export function HomePage() {
       </section>
 
       {/* Learning Resources Section */}
-      <section className="section border-t border-borderSoft/60">
+      <section className="section">
         <div className="container-page">
           <div className="section-header">
             <h2 className="section-title italic">// Learning Resources</h2>

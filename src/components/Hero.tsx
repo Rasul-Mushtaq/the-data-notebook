@@ -1,6 +1,6 @@
 export function Hero() {
   return (
-    <section className="section text-center pt-32">
+    <section className="section text-center pt-48">
       <div className="container-page">
         <h1 className="font-display text-4xl md:text-6xl font-bold text-charcoal mb-4 tracking-tight leading-tight">
           Data Science &amp; Technical Engineering Guide.

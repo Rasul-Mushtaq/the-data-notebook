@@ -8,6 +8,7 @@ export function ScrollToTop() {
   useEffect(() => {
     const prevPath = prevPathnameRef.current;
 
+    // Save home scroll position when leaving home
     if (prevPath === "/" && pathname.startsWith("/topics/")) {
       sessionStorage.setItem("home_scroll_pos", window.scrollY.toString());
     }

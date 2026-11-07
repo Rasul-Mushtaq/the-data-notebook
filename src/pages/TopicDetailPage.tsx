@@ -9,6 +9,7 @@ import {
   Cpu,
   PlayCircle,
   GraduationCap,
+  ChevronRight,
 } from "lucide-react";
 import { BlockMath } from "react-katex";
 import { VisualCodeRunner } from "../components/VisualCodeRunner";
@@ -69,11 +70,11 @@ export function TopicDetailPage() {
           </p>
         </div>
 
-        {/* Progressive Modules Section (Elementary to Advanced) */}
+        {/* Modules Roadmap with Interactive Pill Links */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
             <GraduationCap className="w-5 h-5 text-zinc-400" /> Curriculum
-            Roadmap: Elementary to Advanced
+            Roadmap: Click Concepts for Deep-Dives
           </h2>
           <p className="text-zinc-300 leading-relaxed mb-8">
             {topic.description}
@@ -112,17 +113,19 @@ export function TopicDetailPage() {
                     {mod.description}
                   </p>
                   <div className="border-t border-zinc-800/80 pt-4">
-                    <span className="text-xs font-mono text-zinc-500 block mb-2 uppercase tracking-wider">
-                      Key Concepts Covered:
+                    <span className="text-xs font-mono text-zinc-500 block mb-3 uppercase tracking-wider">
+                      Click any topic pill to explore deep-dive details:
                     </span>
-                    <div className="flex flex-wrap gap-2">
-                      {mod.keyConcepts.map((concept, cIdx) => (
-                        <span
-                          key={cIdx}
-                          className="text-xs font-mono bg-zinc-800/80 text-zinc-300 px-2.5 py-1 rounded"
+                    <div className="flex flex-wrap gap-2.5">
+                      {mod.keyConcepts.map((concept) => (
+                        <Link
+                          key={concept.id}
+                          to={`/topics/${topic.id}/subtopic/${concept.id}`}
+                          className="group inline-flex items-center gap-1.5 text-xs font-mono bg-zinc-800 hover:bg-zinc-700 text-zinc-200 hover:text-white px-3 py-1.5 rounded-lg border border-zinc-700/60 hover:border-zinc-500 transition-all shadow-sm"
                         >
-                          {concept}
-                        </span>
+                          {concept.label}
+                          <ChevronRight className="w-3 h-3 text-zinc-400 group-hover:translate-x-0.5 transition-transform" />
+                        </Link>
                       ))}
                     </div>
                   </div>

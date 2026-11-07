@@ -25,57 +25,73 @@ export const topicsData: Topic[] = [
     title: "Data Structures & Algorithms",
     eyebrow: "Engineering Foundations",
     summary:
-      "Master fundamental structures and algorithmic paradigms that govern computational efficiency and scale.",
+      "Architect high-performance computational systems by mastering memory layout, cache locality, and algorithmic complexity.",
     description:
-      "Efficient problem solving requires choosing the right data organization and understanding time and space complexity boundaries. This section covers core algorithmic strategies and data containers.",
+      "Low-latency systems require precise alignment between data structures and hardware caches. Beyond basic syntax, production engineering demands understanding amortized complexity, pointer chasing overhead, and graph topology traversal under memory constraints.",
     breakdown: [
-      "Asymptotic Analysis (Big-O, Omega, Theta notations)",
-      "Linear Structures: Arrays, Linked Lists, Stacks, Queues",
-      "Hierarchical Structures: Binary Search Trees, AVL Trees, Heaps",
-      "Graph Traversal: Breadth-First Search, Depth-First Search, Dijkstra Algorithm",
-      "Algorithmic Paradigms: Two Pointers, Sliding Window, Dynamic Programming",
+      "Cache-conscious data layouts and contiguous memory allocation versus pointer indirections",
+      "Asymptotic analysis frameworks for worst-case, average-case, and amortized time complexity",
+      "Hierarchical balancing in self-balancing binary search trees and heap memory organization",
+      "Graph and network topology traversals for shortest path routing and dependency resolution",
+      "Algorithmic paradigms including two pointers, sliding windows, and memoized dynamic programming",
     ],
     code: {
       language: "cpp",
-      title: "Binary Search Implementation in C++",
-      code: `#include <vector>
+      title: "Cache-Efficient LRU Cache Implementation in C++",
+      code: `#include <unordered_map>
+#include <list>
 
-int binarySearch(const std::vector<int>& arr, int target) {
-    // Searches for a target value in a sorted array in O(log n) time.
-    int left = 0;
-    int right = static_cast<int>(arr.size()) - 1;
+class LRUCache {
+private:
+    int capacity;
+    std::list<std::pair<int, int>> cacheList;
+    std::unordered_map<int, std::list<std::pair<int, int>>::iterator> cacheMap;
 
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
+public:
+    LRUCache(int cap) : capacity(cap) {}
 
-        if (arr[mid] == target) {
-            return mid;
-        } else if (arr[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
+    int get(int key) {
+        auto it = cacheMap.find(key);
+        if (it == cacheMap.end()) return -1;
+        
+        // Move accessed item to the front (most recently used)
+        cacheList.splice(cacheList.begin(), cacheList, it->second);
+        return it->second->second;
     }
-    return -1; // Target not found
-}`,
+
+    void put(int key, int value) {
+        auto it = cacheMap.find(key);
+        if (it != cacheMap.end()) {
+            it->second->second = value;
+            cacheList.splice(cacheList.begin(), cacheList, it->second);
+            return;
+        }
+
+        if (cacheList.size() >= capacity) {
+            int lastKey = cacheList.back().first;
+            cacheList.pop_back();
+            cacheMap.erase(lastKey);
+        }
+
+        cacheList.push_front({key, value});
+        cacheMap[key] = cacheList.begin();
+    }
+};`,
     },
     formula: {
-      title: "Master Theorem for Recurrence Relations",
-      latex: "T(n) = aT(n/b) + f(n)",
+      title: "Amortized Analysis Potential Function",
+      latex: "\\Phi(D_i) \\ge \\Phi(D_0) \\quad \\text{for all } i",
       explanation:
-        "Used to determine the time complexity of divide-and-conquer algorithms like Merge Sort and Binary Search, where 'a' is sub-problems count, 'b' is factor by which input size is reduced, and f(n) is work done outside recursive calls.",
+        "The potential method assigns a potential function to data structure states. Amortized cost equals actual cost plus the change in potential, ensuring efficient bounds across a sequence of operations.",
     },
     realWorldApps: [
-      "Database indexing and B-Tree lookups in PostgreSQL and MySQL",
-      "Route calculation and shortest-path navigation in mapping software",
-      "Real-time autocomplete and prefix search using Tries",
+      "In-memory caching layers in distributed key-value stores like Redis and Memcached",
+      "Database engine buffer pool management replacing Least Recently Used disk pages",
+      "Packet routing and network switch forwarding tables operating at wire speed",
     ],
     links: [
-      { label: "LeetCode Practice Hub", url: "https://leetcode.com" },
-      {
-        label: "VisuAlgo Data Structure Visualizations",
-        url: "https://visualgo.net",
-      },
+      { label: "LeetCode Algorithmic Hub", url: "https://leetcode.com" },
+      { label: "VisuAlgo Structure Visualizer", url: "https://visualgo.net" },
     ],
   },
   {
@@ -83,44 +99,51 @@ int binarySearch(const std::vector<int>& arr, int target) {
     title: "Database Management & SQL",
     eyebrow: "Data Engineering",
     summary:
-      "Design robust relational schemas, optimize query execution plans, and manage transactional integrity at scale.",
+      "Design resilient relational schemas, analyze execution plans, and maintain strict transactional ACID guarantees at scale.",
     description:
-      "Relational database management systems form the backbone of modern web and data architectures. Understanding normalization, indexing, ACID properties, and window functions is critical.",
+      "Relational database management systems require careful index design, isolation level tuning, and query optimization. Understanding cost-based optimizers and lock contention prevents performance degradation under high concurrent loads.",
     breakdown: [
-      "ACID Properties and Transaction Isolation Levels",
-      "Schema Normalization (1NF through 3NF) and Denormalization tradeoffs",
-      "B-Tree Indexes, Composite Indexes, and Query Execution Plans",
-      "Advanced SQL: CTEs, Window Functions (ROW_NUMBER, RANK, LAG/LEAD)",
-      "NoSQL versus Relational: CAP Theorem and Partition Tolerance",
+      "ACID transactional guarantees and isolation anomalies (dirty reads, non-repeatable reads, phantom reads)",
+      "Relational schema normalization through Boyce-Codd Normal Form and strategic denormalization",
+      "B-Tree index structures, composite index column ordering rules, and covering index scans",
+      "Advanced analytical querying using Common Table Expressions and window frame functions",
+      "Distributed consistency models, replication lag management, and the CAP theorem",
     ],
     code: {
       language: "sql",
-      title: "Advanced SQL: Moving Average Window Function",
-      code: `SELECT 
-    date,
-    revenue,
-    AVG(revenue) OVER (
-        ORDER BY date 
-        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-    ) AS rolling_7day_avg
-FROM daily_sales
-ORDER BY date;`,
+      title: "Advanced SQL: Hierarchical CTE with Recursive Traversal",
+      code: `WITH RECURSIVE org_hierarchy AS (
+    -- Anchor member: Select root management nodes
+    SELECT employee_id, manager_id, name, title, 1 AS depth
+    FROM employees
+    WHERE manager_id IS NULL
+
+    UNION ALL
+
+    -- Recursive member: Traverse down the organizational tree
+    SELECT e.employee_id, e.manager_id, e.name, e.title, oh.depth + 1
+    FROM employees e
+    INNER JOIN org_hierarchy oh ON e.manager_id = oh.employee_id
+)
+SELECT employee_id, name, title, depth
+FROM org_hierarchy
+ORDER BY depth, name;`,
     },
     formula: {
-      title: "Relational Algebra Selection and Join Cost",
-      latex: "Cost(R \\bowtie S) = B_R + B_R \\times B_S",
+      title: "B-Tree Node Search Cost Function",
+      latex: "Cost = I/O_{read} \\times \\log_b(N)",
       explanation:
-        "Estimating block disk accesses during nested-loop joins to optimize query execution times in database query planners.",
+        "Models disk input and output operations required to locate a record in a B-Tree index, where b is the branching factor and N is total indexed rows.",
     },
     realWorldApps: [
-      "Financial ledger transactions maintaining strict ACID guarantees",
-      "E-commerce inventory tracking across distributed fulfillment centers",
-      "User analytics aggregation pipelines using windowed aggregations",
+      "Multi-tenant financial ledgers ensuring zero-loss double-entry bookkeeping",
+      "High-throughput e-commerce inventory reservation and locking mechanisms",
+      "Real-time fraud detection transaction logging and auditing pipelines",
     ],
     links: [
       { label: "Use The Index, Luke!", url: "https://use-the-index-luke.com" },
       {
-        label: "PostgreSQL Official Documentation",
+        label: "PostgreSQL Architecture Guide",
         url: "https://www.postgresql.org/docs/",
       },
     ],
@@ -130,51 +153,55 @@ ORDER BY date;`,
     title: "Data Analysis & Visualization",
     eyebrow: "Data Science",
     summary:
-      "Extract insights from raw datasets using statistical methods, exploratory data analysis, and clear visual storytelling.",
+      "Transform raw telemetry and logs into actionable insights using rigorous statistical testing and robust EDA workflows.",
     description:
-      "Data analysis bridges raw data collection and actionable decision making. Through Pandas, NumPy, and statistical testing, analysts uncover hidden distributions, anomalies, and correlations.",
+      "Data analysis bridges raw data ingestion and executive decision making. Practitioners must handle skewed distributions, missing data imputation, and hypothesis testing without introducing sampling bias.",
     breakdown: [
-      "Data Cleaning, Handling Missing Values, and Outlier Detection",
-      "Exploratory Data Analysis with Pandas and NumPy",
-      "Statistical Inference: Hypothesis Testing, p-values, and Confidence Intervals",
-      "Correlation and Feature Distribution Analysis",
-      "Visual Storytelling principles using Matplotlib and Seaborn",
+      "Robust exploratory data analysis, missing data imputation strategies, and outlier detection",
+      "Parametric and nonparametric hypothesis testing, p-values, and statistical power",
+      "Feature distribution transformations, log scaling, and variance stabilization",
+      "Correlation structures, multicollinearity diagnostics, and principal component analysis",
+      "Visual storytelling principles emphasizing data-ink ratios and perceptual accuracy",
     ],
     code: {
       language: "python",
-      title: "Exploratory Data Analysis with Pandas",
+      title: "Robust Outlier Detection via Interquartile Range",
       code: `import pandas as pd
 import numpy as np
 
-def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
-    """Computes robust summary statistics for numerical features."""
+def filter_outliers_iqr(df: pd.DataFrame, column: str, multiplier: float = 1.5) -> pd.DataFrame:
+    """Removes statistical outliers from a dataframe column using IQR bounds."""
     series = df[column].dropna()
-    return {
-        "mean": series.mean(),
-        "median": series.median(),
-        "std": series.std(),
-        "iqr": series.quantile(0.75) - series.quantile(0.25),
-        "skewness": series.skew()
-    }`,
+    q1 = series.quantile(0.25)
+    q3 = series.quantile(0.75)
+    iqr = q3 - q1
+    
+    lower_bound = q1 - (multiplier * iqr)
+    upper_bound = q3 + (multiplier * iqr)
+    
+    filtered_df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
+    return filtered_df`,
     },
     formula: {
-      title: "Pearson Correlation Coefficient",
-      latex:
-        "r = \\frac{\\sum (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum (x_i - \\bar{x})^2 \\sum (y_i - \\bar{y})^2}}",
+      title: "Mann-Whitney U Test Statistic",
+      latex: "U_1 = n_1 n_2 + \\frac{n_1(n_1 + 1)}{2} - R_1",
       explanation:
-        "Measures linear correlation between two sets of data, yielding values between -1 and +1.",
+        "A nonparametric statistical test used to evaluate whether two independent samples were selected from populations with identical distributions.",
     },
     realWorldApps: [
-      "A/B testing analysis for product feature conversions",
-      "Customer churn analysis and cohort retention tracking",
-      "Financial market risk and volatility assessment dashboards",
+      "A/B testing conversion rate analysis with statistical confidence intervals",
+      "User engagement retention cohort analysis and churn modeling",
+      "Financial portfolio risk assessment and volatility tracking dashboards",
     ],
     links: [
       {
         label: "Python Data Science Handbook",
         url: "https://jakevdp.github.io/PythonDataScienceHandbook/",
       },
-      { label: "Pandas Documentation", url: "https://pandas.pydata.org/docs/" },
+      {
+        label: "Pandas Reference Manual",
+        url: "https://pandas.pydata.org/docs/",
+      },
     ],
   },
   {
@@ -182,46 +209,51 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
     title: "Machine Learning & Modeling",
     eyebrow: "Artificial Intelligence",
     summary:
-      "Build, evaluate, and tune predictive models using supervised and unsupervised learning algorithms.",
+      "Build, evaluate, and regularize predictive systems using supervised algorithms and robust cross-validation pipelines.",
     description:
-      "Machine learning transforms historical data into predictive systems. From linear models to gradient boosted trees and neural networks, understanding underlying mathematics ensures robust generalization.",
+      "Machine learning converts historical observations into predictive generalization. Engineers must navigate the bias-variance dilemma, prevent data leakage during feature engineering, and optimize loss functions.",
     breakdown: [
-      "Supervised Learning: Linear Regression, Logistic Regression, Decision Trees",
-      "Ensemble Methods: Random Forests, Gradient Boosting (XGBoost, LightGBM)",
-      "Model Evaluation: ROC-AUC, Precision, Recall, F1-Score, Cross-Validation",
-      "Regularization: L1 and L2 penalty terms to prevent overfitting",
-      "Feature Engineering and Dimensionality Reduction (PCA)",
+      "Supervised learning algorithms including linear models, decision trees, and gradient boosters",
+      "Regularization techniques (L1 Lasso and L2 Ridge) to penalize model complexity",
+      "Cross-validation strategies, stratified splitting, and temporal time-series validation",
+      "Classification evaluation metrics (ROC-AUC, Precision-Recall curves, F1 optimization)",
+      "Model deployment considerations, latency constraints, and feature store architectures",
     ],
     code: {
       language: "python",
-      title: "Scikit-Learn Pipeline and Model Training",
-      code: `from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
+      title: "Ridge Regression Gradient Descent Optimization",
+      code: `import numpy as np
 
-def train_classifier(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    
-    pipeline = Pipeline([
-        ('scaler', StandardScaler()),
-        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42))
-    ])
-    
-    pipeline.fit(X_train, y_train)
-    score = pipeline.score(X_test, y_test)
-    return pipeline, score`,
+def compute_ridge_gradient_descent(X: np.ndarray, y: np.ndarray, alpha: float, lr: float, epochs: int) -> np.ndarray:
+    """Optimizes weights for linear regression with L2 regularization."""
+    m, n = X.shape
+    weights = np.zeros(n)
+    bias = 0.0
+
+    for _ in range(epochs):
+        y_pred = np.dot(X, weights) + bias
+        error = y_pred - y
+        
+        # Gradient computation with L2 penalty term
+        dw = (1 / m) * np.dot(X.T, error) + (alpha / m) * weights
+        db = (1 / m) * np.sum(error)
+        
+        weights -= lr * dw
+        bias -= lr * db
+
+    return weights`,
     },
     formula: {
-      title: "Logistic Regression Sigmoid and Loss",
-      latex: "P(y=1|x) = \\sigma(w^T x + b) = \\frac{1}{1 + e^{-(w^T x + b)}}",
+      title: "Ridge Regularized Loss Function",
+      latex:
+        "L(w) = \\frac{1}{2m} \\sum_{i=1}^{m} (y^{(i)} - w^T x^{(i)})^2 + \\frac{\\alpha}{2m} \\sum_{j=1}^{n} w_j^2",
       explanation:
-        "Maps real-valued inputs into a probability range between 0 and 1 for binary classification tasks.",
+        "Minimizes residual sum of squares while adding an L2 penalty on weight magnitudes to prevent overfitting and multicollinearity.",
     },
     realWorldApps: [
-      "Credit card fraud detection models flagging anomalous transactions",
-      "Recommendation engines powering e-commerce and media streaming",
-      "Predictive maintenance systems forecasting industrial machine failures",
+      "Credit card fraud detection models flagging anomalous transaction patterns",
+      "Personalized recommendation engines powering streaming media platforms",
+      "Predictive maintenance systems forecasting industrial machinery failures",
     ],
     links: [
       {

@@ -43,8 +43,8 @@ npm run build
 
 ```
 src/
-  components/   # Reusable UI components (Hero, Navbar, TechMarquee)
-  pages/        # Page components (HomePage)
+  components/   # Reusable UI components
+  pages/        # Page components
   types.ts      # TypeScript interfaces for topics and resources
   main.tsx      # Application entry point
   index.css     # Tailwind CSS base styles

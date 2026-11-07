@@ -26,7 +26,20 @@ export const resourcesData: Resource[] = [
       "A comprehensive masterclass covering Python fundamentals, data manipulation with Pandas, numerical computing with NumPy, and introductory machine learning workflows.",
     url: "https://www.youtube.com/watch?v=CMEWVn1uZpQ",
     thumbnailUrl: "https://i.ytimg.com/vi/CMEWVn1uZpQ/maxresdefault.jpg",
-    durationOrLevel: "6 Hours • Beginner to Intermediate",
+    durationOrLevel: "6 Hours • Beginner",
+  },
+  {
+    id: "yt-statquest-stats",
+    title:
+      "StatQuest with Josh Starmer - Statistics & Machine Learning Fundamentals",
+    platform: "StatQuest",
+    category: "YouTube",
+    topic: "Data Science & Statistics",
+    description:
+      "Clear, visually intuitive step-by-step breakdowns of statistical concepts, p-values, machine learning algorithms, and neural networks without heavy jargon.",
+    url: "https://www.youtube.com/@StatQuest",
+    thumbnailUrl: "https://i.ytimg.com/vi/nk2cqITm_eg/maxresdefault.jpg",
+    durationOrLevel: "Video Series • All Levels",
   },
   {
     id: "mit-6006-algo",
@@ -40,59 +53,92 @@ export const resourcesData: Resource[] = [
     durationOrLevel: "Spring 2020 • Advanced",
   },
   {
+    id: "harvard-cs50-sql",
+    title: "CS50's Introduction to Databases with SQL",
+    platform: "Harvard University",
+    category: "University Course",
+    topic: "Database & SQL",
+    description:
+      "Learn how to query, design, and scale relational databases using SQLite, PostgreSQL, and MySQL with real-world problem sets.",
+    url: "https://cs50.harvard.edu/sql/",
+    durationOrLevel: "7 Weeks • Free OpenCourseWare",
+  },
+  {
+    id: "harvard-ds-python",
+    title: "Harvard Introduction to Data Science with Python",
+    platform: "Harvard University",
+    category: "University Course",
+    topic: "Data Science & ML",
+    description:
+      "Exploratory data analysis, statistical modeling, and data visualization using Python libraries taught through Harvard's open learning resources.",
+    url: "https://pll.harvard.edu/subject/data-science",
+    durationOrLevel: "Self-Paced • Intermediate",
+  },
+  {
+    id: "khan-academy-stats",
+    title: "Statistics and Probability Full Curriculum",
+    platform: "Khan Academy",
+    category: "Interactive Platform",
+    topic: "Statistics & Probability",
+    description:
+      "Free comprehensive interactive units covering categorical data, distributions, confidence intervals, hypothesis testing, and random variables.",
+    url: "https://www.khanacademy.org/math/statistics-probability",
+    durationOrLevel: "Free Interactive Modules • All Levels",
+  },
+  {
+    id: "codecademy-excel-data",
+    title: "Microsoft Excel for Data Analysis",
+    platform: "Codecademy",
+    category: "Online Course",
+    topic: "Data Analysis",
+    description:
+      "Learn data wrangling, pivot tables, lookup functions, and data visualization fundamentals using Microsoft Excel.",
+    url: "https://www.codecademy.com/",
+    durationOrLevel: "Free Basic Track • Beginner",
+  },
+  {
+    id: "udacity-sql-data",
+    title: "SQL for Data Analysis",
+    platform: "Udacity",
+    category: "Online Course",
+    topic: "Database & SQL",
+    description:
+      "Free introductory course teaching basic to advanced SQL joins, aggregations, subqueries, and window functions for data analysts.",
+    url: "https://www.udacity.com/course/sql-for-data-analysis--ud198",
+    durationOrLevel: "Free Course • Beginner to Intermediate",
+  },
+  {
+    id: "tableau-free-training",
+    title: "Tableau Free Training Video Archive",
+    platform: "Tableau",
+    category: "Interactive Platform",
+    topic: "Data Visualization",
+    description:
+      "Official free video archive covering visual analytics, dashboard design, mapping, calculations, and data connectivity.",
+    url: "https://www.tableau.com/learn/training/training-video-archive",
+    durationOrLevel: "Video Library • Self-Paced",
+  },
+  {
+    id: "simplilearn-tableau",
+    title: "Introduction to Tableau Free Course",
+    platform: "Simplilearn",
+    category: "Online Course",
+    topic: "Data Visualization",
+    description:
+      "Free online training course introducing Tableau workspace fundamentals, data visualization best practices, and interactive dashboard creation.",
+    url: "https://www.simplilearn.com/free-tableau-training-course-skills",
+    durationOrLevel: "Free Certification Course • Beginner",
+  },
+  {
     id: "use-the-index-luke",
     title: "Use The Index, Luke! - SQL Indexing & Performance",
     platform: "UseTheIndexLuke.com",
     category: "Interactive Platform",
     topic: "Database & SQL",
     description:
-      "The definitive guide to database performance for SQL developers. Covers B-Tree indexes, execution plans, joins, and database internals across PostgreSQL and MySQL.",
+      "The definitive guide to database performance for SQL developers. Covers B-Tree indexes, execution plans, joins, and database internals.",
     url: "https://use-the-index-luke.com/",
     durationOrLevel: "Self-Paced • Intermediate",
-  },
-  {
-    id: "fast-ai-deep-learning",
-    title: "Practical Deep Learning for Coders",
-    platform: "fast.ai",
-    category: "Online Course",
-    topic: "Machine Learning & AI",
-    description:
-      "World-renowned practical deep learning course starting from application-first principles and building up to state-of-the-art computer vision and NLP models.",
-    url: "https://course.fast.ai/",
-    durationOrLevel: "8 Weeks • Intermediate",
-  },
-  {
-    id: "leetcode-hub",
-    title: "LeetCode Algorithm Practice & Interview Hub",
-    platform: "LeetCode",
-    category: "Interactive Platform",
-    topic: "Algorithms & Data Structures",
-    description:
-      "Interactive coding platform with thousands of curated algorithmic challenges, discussion forums, and company interview problem sets.",
-    url: "https://leetcode.com/",
-    durationOrLevel: "Ongoing • All Levels",
-  },
-  {
-    id: "python-ds-handbook",
-    title: "Python Data Science Handbook",
-    platform: "O'Reilly / GitHub",
-    category: "Online Course",
-    topic: "Data Science & ML",
-    description:
-      "Full open-source digital textbook by Jake VanderPlas covering NumPy, Pandas, Matplotlib, Scikit-Learn, and core data science workflows.",
-    url: "https://jakevdp.github.io/PythonDataScienceHandbook/",
-    durationOrLevel: "Self-Paced • Comprehensive",
-  },
-  {
-    id: "stanford-cs145-sql",
-    title: "Stanford CS145: Introduction to Databases",
-    platform: "Stanford Online",
-    category: "University Course",
-    topic: "Database & SQL",
-    description:
-      "Comprehensive relational database design, SQL querying, transactional ACID guarantees, indexing, and NoSQL data architectures.",
-    url: "https://online.stanford.edu/courses/cs145-introduction-databases",
-    durationOrLevel: "10 Weeks • Intermediate",
   },
   {
     id: "visualgo-ds",
@@ -101,7 +147,7 @@ export const resourcesData: Resource[] = [
     category: "Interactive Platform",
     topic: "Algorithms & Data Structures",
     description:
-      "Interactive visual animations and step-by-step execution traces for sorting, trees, graphs, and graph pathfinding algorithms.",
+      "Interactive visual animations and step-by-step execution traces for sorting, trees, graphs, and pathfinding algorithms.",
     url: "https://visualgo.net/",
     durationOrLevel: "Interactive • Visual",
   },

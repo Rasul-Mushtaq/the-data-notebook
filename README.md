@@ -2,6 +2,8 @@
 
 A personal learning guide and roadmap for data science and technical engineering. Covering different topics with selected learning resources.
 
+<img src="public/the-data-notebook.png">
+
 > ### Tech Stack
 
 ![React](https://img.shields.io/badge/React-087ea4?logo=react&logoColor=white)

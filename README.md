@@ -13,18 +13,17 @@ A personal learning guide and roadmap for data science and technical engineering
 
 This notebook covers core subjects across data science and engineering, with a focus on:
 
-- **Mathematical concepts** and formulas rendered with KaTeX
-- **Data tools** like Python, Pandas, NumPy, and Scikit-learn
-- **Engineering foundations** including SQL, PostgreSQL, Docker, and Jupyter
-- **Learning resources** selected from university courses and online platforms
+- **Data Structures & Algorithms**
+- **Database Management & SQL**
+- **Data Analysis & Visualization**
+- **Machine Learning & Modeling**
 
 ## Features
 
-- Organized topics and resources with detailed breakdowns
-- Dark mode support with a clean cream/charcoal color palette
-- Tech stack showcase with a scrolling marquee
-- Full-text search friendly structure
-- Responsive design that works from mobile to desktop
+- Free learning resources made by different people.
+- The ability to search and filter by topic.
+- Tech stack showcase with a scrolling marquee.
+- Responsive design that works from mobile to desktop.
 
 ## Getting Started
 

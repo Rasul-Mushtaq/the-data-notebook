@@ -8,6 +8,7 @@ import {
   Layers,
   Cpu,
   PlayCircle,
+  GraduationCap,
 } from "lucide-react";
 import { BlockMath } from "react-katex";
 import { VisualCodeRunner } from "../components/VisualCodeRunner";
@@ -36,7 +37,6 @@ export function TopicDetailPage() {
     );
   }
 
-  // Calculate the next topic in rotation
   const nextTopic = topicsData[(currentIndex + 1) % topicsData.length];
 
   return (
@@ -69,28 +69,70 @@ export function TopicDetailPage() {
           </p>
         </div>
 
+        {/* Progressive Modules Section (Elementary to Advanced) */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
-            <Layers className="w-5 h-5 text-zinc-400" /> Overview and Key
-            Breakdown
+            <GraduationCap className="w-5 h-5 text-zinc-400" /> Curriculum
+            Roadmap: Elementary to Advanced
           </h2>
-          <p className="text-zinc-300 leading-relaxed mb-6">
+          <p className="text-zinc-300 leading-relaxed mb-8">
             {topic.description}
           </p>
-          <div className="grid gap-3 bg-zinc-900/60 border border-zinc-800 rounded-xl p-6">
-            {topic.breakdown.map((item, idx) => (
-              <div key={idx} className="flex items-start gap-3">
-                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-mono">
-                  {idx + 1}
-                </span>
-                <span className="text-zinc-200 text-sm md:text-base">
-                  {item}
-                </span>
-              </div>
-            ))}
+
+          <div className="space-y-6">
+            {topic.modules.map((mod, idx) => {
+              const badgeColor =
+                mod.level === "Elementary"
+                  ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
+                  : mod.level === "Intermediate"
+                    ? "bg-amber-500/10 text-amber-400 border-amber-500/30"
+                    : "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+
+              return (
+                <div
+                  key={idx}
+                  className="bg-zinc-900/60 border border-zinc-800 rounded-xl p-6 relative overflow-hidden"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-3">
+                      <span className="w-7 h-7 rounded-full bg-zinc-800 text-zinc-300 flex items-center justify-center text-xs font-mono">
+                        0{idx + 1}
+                      </span>
+                      <h3 className="font-display text-xl font-bold text-zinc-100">
+                        {mod.title}
+                      </h3>
+                    </div>
+                    <span
+                      className={`self-start sm:self-auto text-xs font-mono px-3 py-1 rounded-full border ${badgeColor}`}
+                    >
+                      {mod.level}
+                    </span>
+                  </div>
+                  <p className="text-zinc-300 text-sm md:text-base leading-relaxed mb-4">
+                    {mod.description}
+                  </p>
+                  <div className="border-t border-zinc-800/80 pt-4">
+                    <span className="text-xs font-mono text-zinc-500 block mb-2 uppercase tracking-wider">
+                      Key Concepts Covered:
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {mod.keyConcepts.map((concept, cIdx) => (
+                        <span
+                          key={cIdx}
+                          className="text-xs font-mono bg-zinc-800/80 text-zinc-300 px-2.5 py-1 rounded"
+                        >
+                          {concept}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </section>
 
+        {/* Mathematical Foundation */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
             <BookOpen className="w-5 h-5 text-zinc-400" /> Mathematical
@@ -109,6 +151,7 @@ export function TopicDetailPage() {
           </div>
         </section>
 
+        {/* Interactive Visual Code Runner */}
         <section className="mb-14">
           <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
             <PlayCircle className="w-5 h-5 text-zinc-400" /> Interactive Visual
@@ -122,25 +165,30 @@ export function TopicDetailPage() {
           />
         </section>
 
+        {/* Real-World Applications */}
         <section className="mb-14">
-          <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4">
-            Real-World Applications
+          <h2 className="font-display text-2xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
+            <Layers className="w-5 h-5 text-zinc-400" /> Real-World Engineering
+            Applications
           </h2>
           <div className="grid gap-4 md:grid-cols-3">
             {topic.realWorldApps.map((app, idx) => (
               <div
                 key={idx}
-                className="bg-zinc-900/60 border border-zinc-800 p-6 rounded-xl"
+                className="bg-zinc-900/60 border border-zinc-800 p-6 rounded-xl flex flex-col justify-between"
               >
-                <span className="font-mono text-xs text-zinc-500 block mb-2">
-                  Use Case 0{idx + 1}
-                </span>
-                <p className="text-zinc-200 text-sm leading-relaxed">{app}</p>
+                <div>
+                  <span className="font-mono text-xs text-zinc-500 block mb-2">
+                    Use Case 0{idx + 1}
+                  </span>
+                  <p className="text-zinc-200 text-sm leading-relaxed">{app}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
+        {/* References */}
         <section className="border-t border-zinc-800 pt-10">
           <h2 className="font-display text-xl font-bold text-zinc-100 mb-4">
             Selected Learning References

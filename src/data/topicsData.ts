@@ -1,14 +1,21 @@
+export interface TopicModule {
+  level: "Elementary" | "Intermediate" | "Advanced";
+  title: string;
+  description: string;
+  keyConcepts: string[];
+}
+
 export interface Topic {
   id: string;
   title: string;
   eyebrow: string;
   summary: string;
   description: string;
-  breakdown: string[];
+  modules: TopicModule[];
   code: {
     language: string;
-    code: string;
     title: string;
+    code: string;
   };
   formula: {
     title: string;
@@ -25,73 +32,82 @@ export const topicsData: Topic[] = [
     title: "Data Structures & Algorithms",
     eyebrow: "Engineering Foundations",
     summary:
-      "Architect high-performance computational systems by mastering memory layout, cache locality, and algorithmic complexity.",
+      "Master computational efficiency and scale by progressing from elementary linear containers to advanced graph and tree traversal algorithms.",
     description:
-      "Low-latency systems require precise alignment between data structures and hardware caches. Beyond basic syntax, production engineering demands understanding amortized complexity, pointer chasing overhead, and graph topology traversal under memory constraints.",
-    breakdown: [
-      "Cache-conscious data layouts and contiguous memory allocation versus pointer indirections",
-      "Asymptotic analysis frameworks for worst-case, average-case, and amortized time complexity",
-      "Hierarchical balancing in self-balancing binary search trees and heap memory organization",
-      "Graph and network topology traversals for shortest path routing and dependency resolution",
-      "Algorithmic paradigms including two pointers, sliding windows, and memoized dynamic programming",
+      "Building resilient software systems requires selecting optimal data layouts and understanding asymptotic complexity bounds across different hardware and memory hierarchies.",
+    modules: [
+      {
+        level: "Elementary",
+        title: "Asymptotic Analysis & Linear Containers",
+        description:
+          "Understanding Big-O notation, memory allocation models, and contiguous vs linked memory structures.",
+        keyConcepts: [
+          "Big-O, Omega, and Theta notations",
+          "Static arrays and dynamic vector resizing",
+          "Singly and doubly linked lists",
+        ],
+      },
+      {
+        level: "Intermediate",
+        title: "Searching, Sorting & Divide-and-Conquer",
+        description:
+          "Optimizing search spaces using logarithmic partitioning and pointer manipulation paradigms.",
+        keyConcepts: [
+          "Binary search invariants",
+          "Merge sort and quicksort partitioning",
+          "Two pointers and sliding window techniques",
+        ],
+      },
+      {
+        level: "Advanced",
+        title: "Hierarchical Structures & Graph Theory",
+        description:
+          "Modeling non-linear relationships using trees, priority queues, and network pathfinding algorithms.",
+        keyConcepts: [
+          "Binary Search Trees (BST) and AVL self-balancing",
+          "Min-Heaps and priority queue scheduling",
+          "Breadth-First Search, Depth-First Search, and Dijkstra shortest path",
+        ],
+      },
     ],
     code: {
       language: "cpp",
-      title: "Cache-Efficient LRU Cache Implementation in C++",
-      code: `#include <unordered_map>
-#include <list>
+      title: "Binary Search Implementation in C++",
+      code: `#include <vector>
 
-class LRUCache {
-private:
-    int capacity;
-    std::list<std::pair<int, int>> cacheList;
-    std::unordered_map<int, std::list<std::pair<int, int>>::iterator> cacheMap;
+int binarySearch(const std::vector<int>& arr, int target) {
+    // Searches for a target value in a sorted array in O(log n) time.
+    int left = 0;
+    int right = static_cast<int>(arr.size()) - 1;
 
-public:
-    LRUCache(int cap) : capacity(cap) {}
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
 
-    int get(int key) {
-        auto it = cacheMap.find(key);
-        if (it == cacheMap.end()) return -1;
-        
-        // Move accessed item to the front (most recently used)
-        cacheList.splice(cacheList.begin(), cacheList, it->second);
-        return it->second->second;
-    }
-
-    void put(int key, int value) {
-        auto it = cacheMap.find(key);
-        if (it != cacheMap.end()) {
-            it->second->second = value;
-            cacheList.splice(cacheList.begin(), cacheList, it->second);
-            return;
+        if (arr[mid] == target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
         }
-
-        if (cacheList.size() >= capacity) {
-            int lastKey = cacheList.back().first;
-            cacheList.pop_back();
-            cacheMap.erase(lastKey);
-        }
-
-        cacheList.push_front({key, value});
-        cacheMap[key] = cacheList.begin();
     }
-};`,
+    return -1; // Target not found
+}`,
     },
     formula: {
-      title: "Amortized Analysis Potential Function",
-      latex: "\\Phi(D_i) \\ge \\Phi(D_0) \\quad \\text{for all } i",
+      title: "Master Theorem for Recurrence Relations",
+      latex: "T(n) = aT(n/b) + f(n)",
       explanation:
-        "The potential method assigns a potential function to data structure states. Amortized cost equals actual cost plus the change in potential, ensuring efficient bounds across a sequence of operations.",
+        "Used to determine the time complexity of divide-and-conquer algorithms like Merge Sort and Binary Search, where 'a' represents sub-problems count, 'b' is the input reduction factor, and f(n) is the work done outside recursive calls.",
     },
     realWorldApps: [
-      "In-memory caching layers in distributed key-value stores like Redis and Memcached",
-      "Database engine buffer pool management replacing Least Recently Used disk pages",
-      "Packet routing and network switch forwarding tables operating at wire speed",
+      "Database engine indexing and B-Tree disk page lookups in PostgreSQL and MySQL",
+      "Geospatial route calculation and shortest-path navigation in mapping software",
+      "Real-time autocomplete and prefix search indexing using Trie data structures",
     ],
     links: [
-      { label: "LeetCode Algorithmic Hub", url: "https://leetcode.com" },
-      { label: "VisuAlgo Structure Visualizer", url: "https://visualgo.net" },
+      { label: "LeetCode Practice Hub", url: "https://leetcode.com" },
+      { label: "VisuAlgo Visualizations", url: "https://visualgo.net" },
     ],
   },
   {
@@ -99,51 +115,72 @@ public:
     title: "Database Management & SQL",
     eyebrow: "Data Engineering",
     summary:
-      "Design resilient relational schemas, analyze execution plans, and maintain strict transactional ACID guarantees at scale.",
+      "Design reliable relational schemas, optimize query execution plans, and enforce transactional ACID integrity at scale.",
     description:
-      "Relational database management systems require careful index design, isolation level tuning, and query optimization. Understanding cost-based optimizers and lock contention prevents performance degradation under high concurrent loads.",
-    breakdown: [
-      "ACID transactional guarantees and isolation anomalies (dirty reads, non-repeatable reads, phantom reads)",
-      "Relational schema normalization through Boyce-Codd Normal Form and strategic denormalization",
-      "B-Tree index structures, composite index column ordering rules, and covering index scans",
-      "Advanced analytical querying using Common Table Expressions and window frame functions",
-      "Distributed consistency models, replication lag management, and the CAP theorem",
+      "Relational database management systems form the bedrock of backend architectures. Mastery ranges from basic projection and filtering to complex window functions and cost-based query optimization.",
+    modules: [
+      {
+        level: "Elementary",
+        title: "Relational Foundations & Basic Queries",
+        description:
+          "Understanding tables, primary keys, foreign keys, and basic filtering predicates.",
+        keyConcepts: [
+          "SELECT projections and WHERE filtering",
+          "Aggregate functions (COUNT, SUM, AVG)",
+          "GROUP BY and HAVING clauses",
+        ],
+      },
+      {
+        level: "Intermediate",
+        title: "Joins, Normalization & Schema Design",
+        description:
+          "Combining disparate tables and structuring schemas to eliminate redundancy and anomaly risks.",
+        keyConcepts: [
+          "Inner, Left, Right, and Full Outer Joins",
+          "First through Third Normal Forms (1NF - 3NF)",
+          "Entity-relationship modeling and foreign key cascades",
+        ],
+      },
+      {
+        level: "Advanced",
+        title: "Indexing, Transactions & Window Functions",
+        description:
+          "Maximizing throughput with B-Tree indexes, isolation levels, and analytical windowing.",
+        keyConcepts: [
+          "ACID properties and transaction isolation levels",
+          "B-Tree index structure and query execution plan analysis",
+          "Advanced window functions (ROW_NUMBER, RANK, LAG, LEAD, CTEs)",
+        ],
+      },
     ],
     code: {
       language: "sql",
-      title: "Advanced SQL: Hierarchical CTE with Recursive Traversal",
-      code: `WITH RECURSIVE org_hierarchy AS (
-    -- Anchor member: Select root management nodes
-    SELECT employee_id, manager_id, name, title, 1 AS depth
-    FROM employees
-    WHERE manager_id IS NULL
-
-    UNION ALL
-
-    -- Recursive member: Traverse down the organizational tree
-    SELECT e.employee_id, e.manager_id, e.name, e.title, oh.depth + 1
-    FROM employees e
-    INNER JOIN org_hierarchy oh ON e.manager_id = oh.employee_id
-)
-SELECT employee_id, name, title, depth
-FROM org_hierarchy
-ORDER BY depth, name;`,
+      title: "Advanced SQL: Moving Average Window Function",
+      code: `SELECT 
+    date,
+    revenue,
+    AVG(revenue) OVER (
+        ORDER BY date 
+        ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
+    ) AS rolling_7day_avg
+FROM daily_sales
+ORDER BY date;`,
     },
     formula: {
-      title: "B-Tree Node Search Cost Function",
-      latex: "Cost = I/O_{read} \\times \\log_b(N)",
+      title: "Relational Algebra Selection and Join Cost",
+      latex: "Cost(R \\bowtie S) = B_R + B_R \\times B_S",
       explanation:
-        "Models disk input and output operations required to locate a record in a B-Tree index, where b is the branching factor and N is total indexed rows.",
+        "Estimating block disk accesses during nested-loop joins to optimize query execution times in database cost-based optimizers.",
     },
     realWorldApps: [
-      "Multi-tenant financial ledgers ensuring zero-loss double-entry bookkeeping",
-      "High-throughput e-commerce inventory reservation and locking mechanisms",
-      "Real-time fraud detection transaction logging and auditing pipelines",
+      "Financial ledger transactions maintaining strict ACID guarantees across distributed banking nodes",
+      "E-commerce inventory management tracking real-time stock levels across fulfillment centers",
+      "Analytical user behavior aggregation pipelines utilizing windowed aggregations",
     ],
     links: [
       { label: "Use The Index, Luke!", url: "https://use-the-index-luke.com" },
       {
-        label: "PostgreSQL Architecture Guide",
+        label: "PostgreSQL Documentation",
         url: "https://www.postgresql.org/docs/",
       },
     ],
@@ -153,55 +190,79 @@ ORDER BY depth, name;`,
     title: "Data Analysis & Visualization",
     eyebrow: "Data Science",
     summary:
-      "Transform raw telemetry and logs into actionable insights using rigorous statistical testing and robust EDA workflows.",
+      "Extract actionable insights from raw datasets using rigorous statistical testing, exploratory data analysis, and clear visual communication.",
     description:
-      "Data analysis bridges raw data ingestion and executive decision making. Practitioners must handle skewed distributions, missing data imputation, and hypothesis testing without introducing sampling bias.",
-    breakdown: [
-      "Robust exploratory data analysis, missing data imputation strategies, and outlier detection",
-      "Parametric and nonparametric hypothesis testing, p-values, and statistical power",
-      "Feature distribution transformations, log scaling, and variance stabilization",
-      "Correlation structures, multicollinearity diagnostics, and principal component analysis",
-      "Visual storytelling principles emphasizing data-ink ratios and perceptual accuracy",
+      "Data analysis bridges raw data ingestion and strategic decision making. Through Pandas, NumPy, and statistical hypothesis testing, analysts uncover hidden distributions and anomalies.",
+    modules: [
+      {
+        level: "Elementary",
+        title: "Data Wrangling & Cleaning",
+        description:
+          "Ingesting tabular datasets, handling missing values, and reshaping data frames.",
+        keyConcepts: [
+          "Pandas DataFrames and NumPy arrays",
+          "Handling null values and type casting",
+          "Filtering, sorting, and conditional indexing",
+        ],
+      },
+      {
+        level: "Intermediate",
+        title: "Exploratory Data Analysis & Aggregation",
+        description:
+          "Summarizing distributions, computing descriptive metrics, and grouping data.",
+        keyConcepts: [
+          "Mean, median, variance, and interquartile range",
+          "Groupby operations and pivot tables",
+          "Outlier detection using z-scores and IQR bounds",
+        ],
+      },
+      {
+        level: "Advanced",
+        title: "Statistical Inference & Visual Storytelling",
+        description:
+          "Validating hypotheses, measuring correlation, and rendering multi-variable dashboards.",
+        keyConcepts: [
+          "Hypothesis testing, p-values, and confidence intervals",
+          "Pearson and Spearman correlation matrices",
+          "Visual storytelling principles with Matplotlib and Seaborn",
+        ],
+      },
     ],
     code: {
       language: "python",
-      title: "Robust Outlier Detection via Interquartile Range",
+      title: "Exploratory Data Analysis with Pandas",
       code: `import pandas as pd
 import numpy as np
 
-def filter_outliers_iqr(df: pd.DataFrame, column: str, multiplier: float = 1.5) -> pd.DataFrame:
-    """Removes statistical outliers from a dataframe column using IQR bounds."""
+def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
+    """Computes robust summary statistics for numerical features."""
     series = df[column].dropna()
-    q1 = series.quantile(0.25)
-    q3 = series.quantile(0.75)
-    iqr = q3 - q1
-    
-    lower_bound = q1 - (multiplier * iqr)
-    upper_bound = q3 + (multiplier * iqr)
-    
-    filtered_df = df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]
-    return filtered_df`,
+    return {
+        "mean": series.mean(),
+        "median": series.median(),
+        "std": series.std(),
+        "iqr": series.quantile(0.75) - series.quantile(0.25),
+        "skewness": series.skew()
+    }`,
     },
     formula: {
-      title: "Mann-Whitney U Test Statistic",
-      latex: "U_1 = n_1 n_2 + \\frac{n_1(n_1 + 1)}{2} - R_1",
+      title: "Pearson Correlation Coefficient",
+      latex:
+        "r = \\frac{\\sum (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum (x_i - \\bar{x})^2 \\sum (y_i - \\bar{y})^2}}",
       explanation:
-        "A nonparametric statistical test used to evaluate whether two independent samples were selected from populations with identical distributions.",
+        "Measures linear correlation between two sets of data, yielding values between -1 (perfect negative correlation) and +1 (perfect positive correlation).",
     },
     realWorldApps: [
-      "A/B testing conversion rate analysis with statistical confidence intervals",
-      "User engagement retention cohort analysis and churn modeling",
-      "Financial portfolio risk assessment and volatility tracking dashboards",
+      "A/B testing analysis for digital product feature conversions and statistical significance",
+      "Customer churn analysis and cohort retention curve tracking for SaaS platforms",
+      "Financial market risk assessment and historical volatility dashboards",
     ],
     links: [
       {
         label: "Python Data Science Handbook",
         url: "https://jakevdp.github.io/PythonDataScienceHandbook/",
       },
-      {
-        label: "Pandas Reference Manual",
-        url: "https://pandas.pydata.org/docs/",
-      },
+      { label: "Pandas Documentation", url: "https://pandas.pydata.org/docs/" },
     ],
   },
   {
@@ -209,51 +270,74 @@ def filter_outliers_iqr(df: pd.DataFrame, column: str, multiplier: float = 1.5) 
     title: "Machine Learning & Modeling",
     eyebrow: "Artificial Intelligence",
     summary:
-      "Build, evaluate, and regularize predictive systems using supervised algorithms and robust cross-validation pipelines.",
+      "Build, evaluate, and tune predictive machine learning systems ranging from linear models to gradient boosted trees and neural networks.",
     description:
-      "Machine learning converts historical observations into predictive generalization. Engineers must navigate the bias-variance dilemma, prevent data leakage during feature engineering, and optimize loss functions.",
-    breakdown: [
-      "Supervised learning algorithms including linear models, decision trees, and gradient boosters",
-      "Regularization techniques (L1 Lasso and L2 Ridge) to penalize model complexity",
-      "Cross-validation strategies, stratified splitting, and temporal time-series validation",
-      "Classification evaluation metrics (ROC-AUC, Precision-Recall curves, F1 optimization)",
-      "Model deployment considerations, latency constraints, and feature store architectures",
+      "Machine learning transforms historical observations into predictive intelligence. Understanding underlying objective functions, optimization mechanics, and evaluation metrics ensures robust model generalization.",
+    modules: [
+      {
+        level: "Elementary",
+        title: "Supervised Foundations & Linear Models",
+        description:
+          "Understanding feature matrices, target vectors, training splits, and linear regression.",
+        keyConcepts: [
+          "Feature scaling and standardization",
+          "Train/test dataset splitting strategies",
+          "Ordinary Least Squares linear regression",
+        ],
+      },
+      {
+        level: "Intermediate",
+        title: "Classification, Trees & Evaluation Metrics",
+        description:
+          "Predicting categorical outcomes, decision tree splitting, and measuring model performance.",
+        keyConcepts: [
+          "Logistic regression and sigmoid activation",
+          "Decision trees and Gini impurity",
+          "Precision, Recall, F1-Score, and ROC-AUC curves",
+        ],
+      },
+      {
+        level: "Advanced",
+        title: "Ensemble Methods, Pipelines & Regularization",
+        description:
+          "Combining models with bagging and boosting, building modular pipelines, and preventing overfitting.",
+        keyConcepts: [
+          "Random Forests and Gradient Boosted Trees (XGBoost/LightGBM)",
+          "L1 (Lasso) and L2 (Ridge) regularization penalties",
+          "Scikit-Learn Pipeline encapsulation and cross-validation",
+        ],
+      },
     ],
     code: {
       language: "python",
-      title: "Ridge Regression Gradient Descent Optimization",
-      code: `import numpy as np
+      title: "Scikit-Learn Pipeline and Model Training",
+      code: `from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
 
-def compute_ridge_gradient_descent(X: np.ndarray, y: np.ndarray, alpha: float, lr: float, epochs: int) -> np.ndarray:
-    """Optimizes weights for linear regression with L2 regularization."""
-    m, n = X.shape
-    weights = np.zeros(n)
-    bias = 0.0
-
-    for _ in range(epochs):
-        y_pred = np.dot(X, weights) + bias
-        error = y_pred - y
-        
-        # Gradient computation with L2 penalty term
-        dw = (1 / m) * np.dot(X.T, error) + (alpha / m) * weights
-        db = (1 / m) * np.sum(error)
-        
-        weights -= lr * dw
-        bias -= lr * db
-
-    return weights`,
+def train_classifier(X, y):
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    
+    pipeline = Pipeline([
+        ('scaler', StandardScaler()),
+        ('classifier', RandomForestClassifier(n_estimators=100, random_state=42))
+    ])
+    
+    pipeline.fit(X_train, y_train)
+    score = pipeline.score(X_test, y_test)
+    return pipeline, score`,
     },
     formula: {
-      title: "Ridge Regularized Loss Function",
-      latex:
-        "L(w) = \\frac{1}{2m} \\sum_{i=1}^{m} (y^{(i)} - w^T x^{(i)})^2 + \\frac{\\alpha}{2m} \\sum_{j=1}^{n} w_j^2",
+      title: "Logistic Regression Sigmoid and Loss",
+      latex: "P(y=1|x) = \\sigma(w^T x + b) = \\frac{1}{1 + e^{-(w^T x + b)}}",
       explanation:
-        "Minimizes residual sum of squares while adding an L2 penalty on weight magnitudes to prevent overfitting and multicollinearity.",
+        "Maps real-valued linear combinations into a probability range between 0 and 1, serving as the foundation for binary classification models.",
     },
     realWorldApps: [
-      "Credit card fraud detection models flagging anomalous transaction patterns",
-      "Personalized recommendation engines powering streaming media platforms",
-      "Predictive maintenance systems forecasting industrial machinery failures",
+      "Credit card fraud detection models flagging anomalous transaction patterns in real-time",
+      "Recommendation engines powering e-commerce product suggestions and media streaming",
+      "Predictive maintenance models forecasting industrial hardware failures before occurrence",
     ],
     links: [
       {

@@ -6,7 +6,6 @@ import {
   Play,
   BookOpen,
   Database,
-  GraduationCap,
   BarChart,
 } from "lucide-react";
 import {
@@ -20,22 +19,26 @@ import {
 } from "react-icons/si";
 
 const platformIcons: Record<string, React.ReactNode> = {
-  freeCodeCamp: <SiYoutube className="w-6 h-6 text-emerald-600" />,
-  "Alex The Analyst": <SiYoutube className="w-6 h-6 text-red-600" />,
-  StatQuest: <SiYoutube className="w-6 h-6 text-red-600" />,
-  "3Blue1Brown": <SiYoutube className="w-6 h-6 text-cyan-600" />,
-  "DataTalks.Club": <SiGithub className="w-6 h-6 text-charcoal" />,
-  "GitHub Community": <SiGithub className="w-6 h-6 text-charcoal" />,
-  "MIT OpenCourseWare": <GraduationCap className="w-6 h-6 text-red-700" />,
-  "Harvard University": <GraduationCap className="w-6 h-6 text-red-900" />,
-  W3Schools: <SiW3Schools className="w-6 h-6 text-emerald-600" />,
-  Kaggle: <SiKaggle className="w-6 h-6 text-sky-500" />,
-  Codecademy: <SiCodecademy className="w-6 h-6 text-slate-900" />,
-  Udacity: <SiUdacity className="w-6 h-6 text-cyan-500" />,
-  "Khan Academy": <SiKhanacademy className="w-6 h-6 text-emerald-600" />,
-  Tableau: <BarChart className="w-6 h-6 text-orange-500" />,
-  "UseTheIndexLuke.com": <Database className="w-6 h-6 text-slate-700" />,
-  VisuAlgo: <BookOpen className="w-6 h-6 text-indigo-600" />,
+  freeCodeCamp: <SiYoutube className="w-8 h-8 text-red-600" />,
+  "Alex The Analyst": <SiYoutube className="w-8 h-8 text-red-600" />,
+  StatQuest: <SiYoutube className="w-8 h-8 text-red-600" />,
+  "3Blue1Brown": <SiYoutube className="w-8 h-8 text-red-600" />,
+  "DataTalks.Club": <SiGithub className="w-8 h-8 text-charcoal" />,
+  "GitHub Community": <SiGithub className="w-8 h-8 text-charcoal" />,
+  "MIT OpenCourseWare": (
+    <img src="/MIT.png" alt="MIT" className="w-8 h-8 object-contain" />
+  ),
+  "Harvard University": (
+    <img src="/harvard.png" alt="Harvard" className="w-8 h-8 object-contain" />
+  ),
+  W3Schools: <SiW3Schools className="w-8 h-8 text-emerald-600" />,
+  Kaggle: <SiKaggle className="w-8 h-8 text-sky-500" />,
+  Codecademy: <SiCodecademy className="w-8 h-8 text-slate-900" />,
+  Udacity: <SiUdacity className="w-8 h-8 text-cyan-500" />,
+  "Khan Academy": <SiKhanacademy className="w-8 h-8 text-emerald-600" />,
+  Tableau: <BarChart className="w-8 h-8 text-orange-500" />,
+  "UseTheIndexLuke.com": <Database className="w-8 h-8 text-slate-700" />,
+  VisuAlgo: <BookOpen className="w-8 h-8 text-indigo-600" />,
 };
 
 const categoryStyles: Record<
@@ -183,30 +186,29 @@ export function ResourcesSection() {
                     )}
                   </div>
                 ) : (
-                  /* Architectural Grid Header with High-Contrast Solid White Badge */
+                  /* Editorial Solid Color Header with Prominent White Logo Badge */
                   <div
                     className="relative aspect-video w-full p-6 flex flex-col items-center justify-center overflow-hidden border-b border-borderSoft transition-transform duration-500"
                     style={{ backgroundColor: res.brandTheme.bg }}
                   >
-                    {/* Restored Subtle Geometric Grid Pattern */}
+                    {/* Editorial Architectural Grid Pattern */}
                     <div
-                      className="absolute inset-0 opacity-15 pointer-events-none"
+                      className="absolute inset-0 opacity-10 pointer-events-none"
                       style={{
-                        backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.4) 1px, transparent 0)`,
-                        backgroundSize: "20px 20px",
+                        backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.6) 1px, transparent 0)`,
+                        backgroundSize: "24px 24px",
                       }}
                     />
 
-                    {/* Restored Subtle Ambient Radial Glow */}
-                    <div
-                      className="absolute -right-10 -bottom-10 w-40 h-40 rounded-full opacity-25 blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700"
-                      style={{ backgroundColor: res.brandTheme.accent }}
-                    />
+                    {/* Subtle Watermark Stamp */}
+                    <span className="absolute right-4 bottom-2 font-mono text-6xl font-extrabold text-white/5 uppercase tracking-tighter select-none pointer-events-none">
+                      {res.platform.slice(0, 3)}
+                    </span>
 
-                    {/* Solid White High-Contrast Badge Container */}
-                    <div className="relative z-10 w-16 h-16 rounded-2xl bg-white shadow-lg ring-1 ring-black/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    {/* Prominent, Noticeable Solid White Badge Container */}
+                    <div className="relative z-10 w-20 h-20 rounded-2xl bg-white shadow-xl ring-1 ring-black/15 flex items-center justify-center group-hover:scale-110 group-hover:shadow-2xl transition-all duration-300 p-3">
                       {platformIcons[res.platform] || (
-                        <BookOpen className="w-7 h-7 text-charcoal" />
+                        <BookOpen className="w-8 h-8 text-charcoal" />
                       )}
                     </div>
                   </div>
@@ -215,8 +217,8 @@ export function ResourcesSection() {
                 {/* Card Body */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center gap-2.5 mb-3">
-                      <div className="w-7 h-7 rounded-lg bg-white border border-borderSoft shadow-sm flex items-center justify-center">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="w-8 h-8 rounded-lg bg-white border border-borderSoft shadow-sm flex items-center justify-center p-1.5 overflow-hidden">
                         {platformIcons[res.platform] || (
                           <BookOpen className="w-4 h-4 text-charcoal" />
                         )}

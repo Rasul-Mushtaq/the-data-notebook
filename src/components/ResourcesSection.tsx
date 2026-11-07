@@ -18,7 +18,7 @@ import {
 } from "react-icons/si";
 
 const platformIcons: Record<string, React.ReactNode> = {
-  freeCodeCamp: <Laptop className="w-5 h-5 text-emerald-600" />,
+  freeCodeCamp: <SiYoutube className="w-5 h-5 text-red-600" />,
   "Alex The Analyst": <SiYoutube className="w-5 h-5 text-red-600" />,
   StatQuest: <SiYoutube className="w-5 h-5 text-red-600" />,
   "3Blue1Brown": <SiYoutube className="w-5 h-5 text-red-600" />,

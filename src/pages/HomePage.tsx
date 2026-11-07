@@ -23,15 +23,13 @@ export function HomePage() {
 
       <TechMarquee />
 
-      {/* Topics Overview Section (Non-clickable showcase cards) */}
+      {/* Topics Overview Section */}
       <section id="topics" className="section bg-cream">
         <div className="container-page">
           <div className="section-header">
-            <span className="section-eyebrow">Core Focus Areas</span>
-            <h2 className="section-title">Topics Covered</h2>
+            <h2 className="section-title italic">// Topics</h2>
             <p className="section-desc">
-              Core technical subjects guiding our resource curation across data
-              science and engineering.
+              Data-related subjects that will be focused on.
             </p>
           </div>
 

@@ -48,11 +48,10 @@ export function ResourcesSection() {
     >
       <div className="container-page">
         <div className="section-header">
-          <span className="section-eyebrow">Curated Knowledge Hub</span>
-          <h2 className="section-title">Learning Resources</h2>
+          <h2 className="section-title italic">// Learning Resources</h2>
           <p className="section-desc">
-            Handpicked YouTube courses, university lectures, online guides, and
-            interactive platforms to accelerate your engineering journey.
+            Selected YouTube courses, university lectures, online guides, and
+            interactive platforms.
           </p>
         </div>
 

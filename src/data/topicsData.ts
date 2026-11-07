@@ -1,8 +1,29 @@
+export interface SubtopicDetail {
+  id: string;
+  title: string;
+  parentTopicId: string;
+  level: "Elementary" | "Intermediate" | "Advanced";
+  summary: string;
+  explanation: string;
+  keyTakeaways: string[];
+  formula?: {
+    title: string;
+    latex: string;
+    explanation: string;
+  };
+  code?: {
+    language: string;
+    title: string;
+    code: string;
+  };
+  realWorldApps: string[];
+}
+
 export interface TopicModule {
   level: "Elementary" | "Intermediate" | "Advanced";
   title: string;
   description: string;
-  keyConcepts: string[];
+  keyConcepts: { id: string; label: string }[];
 }
 
 export interface Topic {
@@ -12,6 +33,7 @@ export interface Topic {
   summary: string;
   description: string;
   modules: TopicModule[];
+  subtopics: Record<string, SubtopicDetail>;
   code: {
     language: string;
     title: string;
@@ -42,9 +64,12 @@ export const topicsData: Topic[] = [
         description:
           "Understanding Big-O notation, memory allocation models, and contiguous vs linked memory structures.",
         keyConcepts: [
-          "Big-O, Omega, and Theta notations",
-          "Static arrays and dynamic vector resizing",
-          "Singly and doubly linked lists",
+          { id: "big-o-notation", label: "Big-O, Omega, and Theta notations" },
+          {
+            id: "arrays-and-vectors",
+            label: "Static arrays and dynamic vector resizing",
+          },
+          { id: "linked-lists", label: "Singly and doubly linked lists" },
         ],
       },
       {
@@ -53,9 +78,15 @@ export const topicsData: Topic[] = [
         description:
           "Optimizing search spaces using logarithmic partitioning and pointer manipulation paradigms.",
         keyConcepts: [
-          "Binary search invariants",
-          "Merge sort and quicksort partitioning",
-          "Two pointers and sliding window techniques",
+          { id: "binary-search", label: "Binary search invariants" },
+          {
+            id: "merge-sort-quicksort",
+            label: "Merge sort and quicksort partitioning",
+          },
+          {
+            id: "two-pointers-sliding-window",
+            label: "Two pointers and sliding window techniques",
+          },
         ],
       },
       {
@@ -64,19 +95,122 @@ export const topicsData: Topic[] = [
         description:
           "Modeling non-linear relationships using trees, priority queues, and network pathfinding algorithms.",
         keyConcepts: [
-          "Binary Search Trees (BST) and AVL self-balancing",
-          "Min-Heaps and priority queue scheduling",
-          "Breadth-First Search, Depth-First Search, and Dijkstra shortest path",
+          {
+            id: "binary-search-trees",
+            label: "Binary Search Trees (BST) and AVL self-balancing",
+          },
+          {
+            id: "heaps-priority-queues",
+            label: "Min-Heaps and priority queue scheduling",
+          },
+          {
+            id: "graph-traversals",
+            label:
+              "Breadth-First Search, Depth-First Search, and Dijkstra shortest path",
+          },
         ],
       },
     ],
+    subtopics: {
+      "big-o-notation": {
+        id: "big-o-notation",
+        parentTopicId: "data-structures-algorithms",
+        level: "Elementary",
+        title: "Big-O, Omega, and Theta Notations",
+        summary:
+          "Asymptotic notation forms the formal mathematical framework for analyzing algorithm execution bounds as input size $n$ grows to infinity.",
+        explanation:
+          "Big-O defines an upper bound on run-time or space complexity ($O(g(n))$). Big-Omega ($\Omega(g(n))$) defines the tight lower bound, while Big-Theta ($\Theta(g(n))$) indicates an exact asymptotically tight bound where upper and lower bounds coincide.",
+        keyTakeaways: [
+          "O(1) Constant Time: Direct array index access or hash map lookups.",
+          "O(log n) Logarithmic Time: Halving problem space iteratively (e.g., Binary Search).",
+          "O(n) Linear Time: Single pass traversal over elements.",
+          "O(n log n) Linearithmic Time: Optimal comparison-based sorting (e.g., Merge Sort).",
+          "O(n^2) Quadratic Time: Nested loops over input size.",
+        ],
+        formula: {
+          title: "Formal Definition of Big-O Notation",
+          latex: "f(n) \\le c \\cdot g(n) \\quad \\forall n \\ge n_0",
+          explanation:
+            "There exist positive constants $c$ and $n_0$ such that $f(n)$ never exceeds $c \\cdot g(n)$ for all inputs larger than $n_0$.",
+        },
+        code: {
+          language: "cpp",
+          title: "Comparing Time Complexity Profiles in C++",
+          code: `#include <iostream>
+#include <vector>
+
+// O(1) Constant Time
+int getFirst(const std::vector<int>& arr) {
+    return arr.empty() ? -1 : arr[0];
+}
+
+// O(n) Linear Time
+int sumArray(const std::vector<int>& arr) {
+    int total = 0;
+    for (int val : arr) {
+        total += val;
+    }
+    return total;
+}`,
+        },
+        realWorldApps: [
+          "Benchmarking engine latency during database query execution planning",
+          "Preventing algorithmic complexity attacks (e.g., hash collision flooding)",
+          "Memory footprint optimization in resource-constrained embedded software",
+        ],
+      },
+      "binary-search": {
+        id: "binary-search",
+        parentTopicId: "data-structures-algorithms",
+        level: "Intermediate",
+        title: "Binary Search Invariants & Partitioning",
+        summary:
+          "Binary search eliminates half of the remaining search space with each comparison by maintaining strict array sorting invariants.",
+        explanation:
+          "By computing the midpoint index $mid = left + (right - left) / 2$, binary search avoids integer overflow while recursively narrowing down target intervals in logarithmic time.",
+        keyTakeaways: [
+          "Requires data to be pre-sorted in contiguous memory buffers.",
+          "Protects against integer overflow by using midpoint computation bounds.",
+          "Forms the foundation for lower-bound and upper-bound searching algorithms.",
+        ],
+        formula: {
+          title: "Logarithmic Division Recurrence",
+          latex: "T(n) = T(n/2) + O(1) \\implies T(n) = O(\\log n)",
+          explanation:
+            "At each recursive step, the search domain size is divided by 2, requiring $\\log_2(n)$ steps to reduce to a single element.",
+        },
+        code: {
+          language: "cpp",
+          title: "Binary Search Invariant Guard Implementation",
+          code: `#include <vector>
+
+int binarySearchInvariant(const std::vector<int>& arr, int target) {
+    int left = 0;
+    int right = static_cast<int>(arr.size()) - 1;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target) return mid;
+        if (arr[mid] < target) left = mid + 1;
+        else right = mid - 1;
+    }
+    return -1;
+}`,
+        },
+        realWorldApps: [
+          "B-Tree block index searching in database engines",
+          "Binary searching git commits via 'git bisect' to locate regressions",
+          "Logarithmic range filtering in memory management frameworks",
+        ],
+      },
+    },
     code: {
       language: "cpp",
       title: "Binary Search Implementation in C++",
       code: `#include <vector>
 
 int binarySearch(const std::vector<int>& arr, int target) {
-    // Searches for a target value in a sorted array in O(log n) time.
     int left = 0;
     int right = static_cast<int>(arr.size()) - 1;
 
@@ -91,14 +225,14 @@ int binarySearch(const std::vector<int>& arr, int target) {
             right = mid - 1;
         }
     }
-    return -1; // Target not found
+    return -1;
 }`,
     },
     formula: {
       title: "Master Theorem for Recurrence Relations",
       latex: "T(n) = aT(n/b) + f(n)",
       explanation:
-        "Used to determine the time complexity of divide-and-conquer algorithms like Merge Sort and Binary Search, where 'a' represents sub-problems count, 'b' is the input reduction factor, and f(n) is the work done outside recursive calls.",
+        "Used to determine the time complexity of divide-and-conquer algorithms like Merge Sort and Binary Search.",
     },
     realWorldApps: [
       "Database engine indexing and B-Tree disk page lookups in PostgreSQL and MySQL",
@@ -125,9 +259,15 @@ int binarySearch(const std::vector<int>& arr, int target) {
         description:
           "Understanding tables, primary keys, foreign keys, and basic filtering predicates.",
         keyConcepts: [
-          "SELECT projections and WHERE filtering",
-          "Aggregate functions (COUNT, SUM, AVG)",
-          "GROUP BY and HAVING clauses",
+          {
+            id: "select-filtering",
+            label: "SELECT projections and WHERE filtering",
+          },
+          {
+            id: "aggregate-functions",
+            label: "Aggregate functions (COUNT, SUM, AVG)",
+          },
+          { id: "group-by-having", label: "GROUP BY and HAVING clauses" },
         ],
       },
       {
@@ -136,9 +276,18 @@ int binarySearch(const std::vector<int>& arr, int target) {
         description:
           "Combining disparate tables and structuring schemas to eliminate redundancy and anomaly risks.",
         keyConcepts: [
-          "Inner, Left, Right, and Full Outer Joins",
-          "First through Third Normal Forms (1NF - 3NF)",
-          "Entity-relationship modeling and foreign key cascades",
+          {
+            id: "sql-joins",
+            label: "Inner, Left, Right, and Full Outer Joins",
+          },
+          {
+            id: "schema-normalization",
+            label: "First through Third Normal Forms (1NF - 3NF)",
+          },
+          {
+            id: "entity-relationship",
+            label: "Entity-relationship modeling and foreign key cascades",
+          },
         ],
       },
       {
@@ -147,12 +296,67 @@ int binarySearch(const std::vector<int>& arr, int target) {
         description:
           "Maximizing throughput with B-Tree indexes, isolation levels, and analytical windowing.",
         keyConcepts: [
-          "ACID properties and transaction isolation levels",
-          "B-Tree index structure and query execution plan analysis",
-          "Advanced window functions (ROW_NUMBER, RANK, LAG, LEAD, CTEs)",
+          {
+            id: "acid-transactions",
+            label: "ACID properties and transaction isolation levels",
+          },
+          {
+            id: "btree-indexes",
+            label: "B-Tree index structure and query execution plan analysis",
+          },
+          {
+            id: "window-functions",
+            label:
+              "Advanced window functions (ROW_NUMBER, RANK, LAG, LEAD, CTEs)",
+          },
         ],
       },
     ],
+    subtopics: {
+      "acid-transactions": {
+        id: "acid-transactions",
+        parentTopicId: "database-management-sql",
+        level: "Advanced",
+        title: "ACID Properties & Transaction Isolation",
+        summary:
+          "ACID guarantees guarantee database reliability despite hardware crashes, power outages, and concurrent query updates.",
+        explanation:
+          "Transactions isolate state modifications. Atomicity ensures all-or-nothing execution; Consistency enforces database constraints; Isolation prevents concurrent query corruption; Durability commits completed changes to non-volatile disk storage.",
+        keyTakeaways: [
+          "Atomicity: Implemented via Write-Ahead Logging (WAL).",
+          "Consistency: Enforced by foreign keys, unique constraints, and domain checks.",
+          "Isolation Levels: Read Uncommitted, Read Committed, Repeatable Read, and Serializable.",
+          "Durability: Ensured by flushes to non-volatile storage prior to transaction success response.",
+        ],
+        formula: {
+          title: "Serializability Validation Cost",
+          latex: "T_{isolation} = \\sum_{i=1}^{k} R_i(x) \\cup W_i(x)",
+          explanation:
+            "Models conflict serializability testing across concurrent transaction schedules.",
+        },
+        code: {
+          language: "sql",
+          title: "Explicit Transaction Control with Rollback Guard",
+          code: `BEGIN TRANSACTION;
+
+UPDATE accounts 
+SET balance = balance - 500 
+WHERE account_id = 101;
+
+UPDATE accounts 
+SET balance = balance + 500 
+WHERE account_id = 202;
+
+-- Guarantee atomic commit
+COMMIT;`,
+        },
+        realWorldApps: [
+          "Bank account ledger transfers ensuring money is never duplicated or lost",
+          "E-commerce flash sale inventory decrements guarding against double allocation",
+          "Distributed flight booking engines managing concurrent seat reservations",
+        ],
+      },
+    },
     code: {
       language: "sql",
       title: "Advanced SQL: Moving Average Window Function",
@@ -170,7 +374,7 @@ ORDER BY date;`,
       title: "Relational Algebra Selection and Join Cost",
       latex: "Cost(R \\bowtie S) = B_R + B_R \\times B_S",
       explanation:
-        "Estimating block disk accesses during nested-loop joins to optimize query execution times in database cost-based optimizers.",
+        "Estimating block disk accesses during nested-loop joins to optimize query execution times.",
     },
     realWorldApps: [
       "Financial ledger transactions maintaining strict ACID guarantees across distributed banking nodes",
@@ -200,9 +404,18 @@ ORDER BY date;`,
         description:
           "Ingesting tabular datasets, handling missing values, and reshaping data frames.",
         keyConcepts: [
-          "Pandas DataFrames and NumPy arrays",
-          "Handling null values and type casting",
-          "Filtering, sorting, and conditional indexing",
+          {
+            id: "pandas-dataframes",
+            label: "Pandas DataFrames and NumPy arrays",
+          },
+          {
+            id: "handling-nulls",
+            label: "Handling null values and type casting",
+          },
+          {
+            id: "indexing-filtering",
+            label: "Filtering, sorting, and conditional indexing",
+          },
         ],
       },
       {
@@ -211,9 +424,18 @@ ORDER BY date;`,
         description:
           "Summarizing distributions, computing descriptive metrics, and grouping data.",
         keyConcepts: [
-          "Mean, median, variance, and interquartile range",
-          "Groupby operations and pivot tables",
-          "Outlier detection using z-scores and IQR bounds",
+          {
+            id: "descriptive-stats",
+            label: "Mean, median, variance, and interquartile range",
+          },
+          {
+            id: "groupby-pivots",
+            label: "Groupby operations and pivot tables",
+          },
+          {
+            id: "outlier-detection",
+            label: "Outlier detection using z-scores and IQR bounds",
+          },
         ],
       },
       {
@@ -222,12 +444,59 @@ ORDER BY date;`,
         description:
           "Validating hypotheses, measuring correlation, and rendering multi-variable dashboards.",
         keyConcepts: [
-          "Hypothesis testing, p-values, and confidence intervals",
-          "Pearson and Spearman correlation matrices",
-          "Visual storytelling principles with Matplotlib and Seaborn",
+          {
+            id: "hypothesis-testing",
+            label: "Hypothesis testing, p-values, and confidence intervals",
+          },
+          {
+            id: "correlation-matrices",
+            label: "Pearson and Spearman correlation matrices",
+          },
+          {
+            id: "visual-storytelling",
+            label: "Visual storytelling principles with Matplotlib and Seaborn",
+          },
         ],
       },
     ],
+    subtopics: {
+      "pandas-dataframes": {
+        id: "pandas-dataframes",
+        parentTopicId: "data-analysis-visualization",
+        level: "Elementary",
+        title: "Pandas DataFrames & Vectorized Memory Models",
+        summary:
+          "Pandas wraps contiguous NumPy arrays into labeled two-dimensional tables optimized for fast aligned operations.",
+        explanation:
+          "By leveraging column-oriented dynamic storage structures written in C/Cython, vectorized operations in Pandas bypass Python interpreter loop overhead.",
+        keyTakeaways: [
+          "Series represents 1D homogeneously typed memory columns.",
+          "DataFrame represents 2D heterogeneous tabular structures.",
+          "Avoid iterating over rows using iterrows(); use vectorized calculations instead.",
+        ],
+        code: {
+          language: "python",
+          title: "Vectorized Column Computation in Pandas",
+          code: `import pandas as pd
+import numpy as np
+
+# Create sample dataset
+df = pd.DataFrame({
+    'price': [19.99, 49.99, 99.99, 14.99],
+    'quantity': [5, 2, 1, 10]
+})
+
+# Vectorized total calculation without loops
+df['total_revenue'] = df['price'] * df['quantity']
+print(df)`,
+        },
+        realWorldApps: [
+          "Batch financial record processing and automated reconciliation",
+          "Automated ETL pipeline transformations prior to database ingestion",
+          "High-throughput data preprocessing for statistical machine learning",
+        ],
+      },
+    },
     code: {
       language: "python",
       title: "Exploratory Data Analysis with Pandas",
@@ -235,7 +504,6 @@ ORDER BY date;`,
 import numpy as np
 
 def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
-    """Computes robust summary statistics for numerical features."""
     series = df[column].dropna()
     return {
         "mean": series.mean(),
@@ -249,8 +517,7 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
       title: "Pearson Correlation Coefficient",
       latex:
         "r = \\frac{\\sum (x_i - \\bar{x})(y_i - \\bar{y})}{\\sqrt{\\sum (x_i - \\bar{x})^2 \\sum (y_i - \\bar{y})^2}}",
-      explanation:
-        "Measures linear correlation between two sets of data, yielding values between -1 (perfect negative correlation) and +1 (perfect positive correlation).",
+      explanation: "Measures linear correlation between two sets of data.",
     },
     realWorldApps: [
       "A/B testing analysis for digital product feature conversions and statistical significance",
@@ -280,9 +547,18 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
         description:
           "Understanding feature matrices, target vectors, training splits, and linear regression.",
         keyConcepts: [
-          "Feature scaling and standardization",
-          "Train/test dataset splitting strategies",
-          "Ordinary Least Squares linear regression",
+          {
+            id: "feature-scaling",
+            label: "Feature scaling and standardization",
+          },
+          {
+            id: "train-test-split",
+            label: "Train/test dataset splitting strategies",
+          },
+          {
+            id: "linear-regression",
+            label: "Ordinary Least Squares linear regression",
+          },
         ],
       },
       {
@@ -291,9 +567,15 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
         description:
           "Predicting categorical outcomes, decision tree splitting, and measuring model performance.",
         keyConcepts: [
-          "Logistic regression and sigmoid activation",
-          "Decision trees and Gini impurity",
-          "Precision, Recall, F1-Score, and ROC-AUC curves",
+          {
+            id: "logistic-regression",
+            label: "Logistic regression and sigmoid activation",
+          },
+          { id: "decision-trees", label: "Decision trees and Gini impurity" },
+          {
+            id: "evaluation-metrics",
+            label: "Precision, Recall, F1-Score, and ROC-AUC curves",
+          },
         ],
       },
       {
@@ -302,12 +584,70 @@ def compute_summary_stats(df: pd.DataFrame, column: str) -> dict:
         description:
           "Combining models with bagging and boosting, building modular pipelines, and preventing overfitting.",
         keyConcepts: [
-          "Random Forests and Gradient Boosted Trees (XGBoost/LightGBM)",
-          "L1 (Lasso) and L2 (Ridge) regularization penalties",
-          "Scikit-Learn Pipeline encapsulation and cross-validation",
+          {
+            id: "ensemble-methods",
+            label:
+              "Random Forests and Gradient Boosted Trees (XGBoost/LightGBM)",
+          },
+          {
+            id: "regularization-penalties",
+            label: "L1 (Lasso) and L2 (Ridge) regularization penalties",
+          },
+          {
+            id: "sklearn-pipelines",
+            label: "Scikit-Learn Pipeline encapsulation and cross-validation",
+          },
         ],
       },
     ],
+    subtopics: {
+      "logistic-regression": {
+        id: "logistic-regression",
+        parentTopicId: "machine-learning-modeling",
+        level: "Intermediate",
+        title: "Logistic Regression & Sigmoid Activation",
+        summary:
+          "Logistic regression predicts probabilities for binary classification targets by passing continuous linear outputs through the non-linear sigmoid function.",
+        explanation:
+          "By mapping inputs into values between 0.0 and 1.0, logistic regression models can be interpreted as conditional probabilities $P(Y=1|X)$. The parameters are optimized using log-loss cross-entropy minimization.",
+        keyTakeaways: [
+          "Uses maximum likelihood estimation rather than ordinary least squares.",
+          "Outputs direct probability estimates bounded between 0 and 1.",
+          "Provides easily interpretable feature coefficient weights.",
+        ],
+        formula: {
+          title: "Binary Cross-Entropy Loss Function",
+          latex:
+            "L(w) = -\\frac{1}{N} \\sum_{i=1}^{N} \\left[ y_i \\log(\\hat{y}_i) + (1 - y_i) \\log(1 - \\hat{y}_i) \\right]",
+          explanation:
+            "Penalizes confident incorrect predictions exponentially to guide gradient descent optimization.",
+        },
+        code: {
+          language: "python",
+          title: "Logistic Regression Training with Scikit-Learn",
+          code: `from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Sample feature matrix X and targets y
+X = np.array([[25, 50000], [45, 120000], [35, 80000], [50, 40000]])
+y = np.array([0, 1, 1, 0])
+
+# Scale features and fit classifier
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+model = LogisticRegression()
+model.fit(X_scaled, y)
+print("Predicted Class:", model.predict(X_scaled))`,
+        },
+        realWorldApps: [
+          "Credit decision engines determining loan default risk probabilities",
+          "Email spam filter systems scoring message risk scores",
+          "Medical diagnostic models estimating disease likelihood from patient biomarkers",
+        ],
+      },
+    },
     code: {
       language: "python",
       title: "Scikit-Learn Pipeline and Model Training",
@@ -332,7 +672,7 @@ def train_classifier(X, y):
       title: "Logistic Regression Sigmoid and Loss",
       latex: "P(y=1|x) = \\sigma(w^T x + b) = \\frac{1}{1 + e^{-(w^T x + b)}}",
       explanation:
-        "Maps real-valued linear combinations into a probability range between 0 and 1, serving as the foundation for binary classification models.",
+        "Maps real-valued linear combinations into a probability range between 0 and 1.",
     },
     realWorldApps: [
       "Credit card fraud detection models flagging anomalous transaction patterns in real-time",

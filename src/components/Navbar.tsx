@@ -4,15 +4,15 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleTopicsClick = (e: React.MouseEvent) => {
+  const handleScrollTo = (e: React.MouseEvent, sectionId: string) => {
     e.preventDefault();
     if (location.pathname === "/") {
-      const el = document.getElementById("topics");
+      const el = document.getElementById(sectionId);
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
       }
     } else {
-      navigate("/#topics");
+      navigate(`/#${sectionId}`);
     }
   };
 
@@ -28,10 +28,17 @@ export function Navbar() {
         <div className="flex items-center gap-6">
           <a
             href="/#topics"
-            onClick={handleTopicsClick}
-            className="flex items-center gap-2 text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium cursor-pointer"
+            onClick={(e) => handleScrollTo(e, "topics")}
+            className="text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium cursor-pointer"
           >
             Topics
+          </a>
+          <a
+            href="/#resources"
+            onClick={(e) => handleScrollTo(e, "resources")}
+            className="text-zinc-500 hover:text-charcoal transition-colors text-sm font-medium cursor-pointer"
+          >
+            Resources
           </a>
           <a
             href="https://github.com/Rasul-Mushtaq"
